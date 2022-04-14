@@ -11,7 +11,13 @@ public class ModelCameraControls : MonoBehaviour
     KeyCode dragKey;
     [SerializeField]
     float rotationSpeed;
+    [SerializeField]
+    float zoomSpeed;
 
+    float zoomLevel;
+
+    const float MIN_ZOOM = .1f;
+    const float MAX_ZOOM = .4f;
 
     bool isDragging;
     Vector3 rotXAxis;
@@ -22,12 +28,14 @@ public class ModelCameraControls : MonoBehaviour
     void Start()
     {
         cam = GetComponent<Camera>();
+        zoomLevel = .25f;
     }
 
     // Update is called once per frame
     void Update()
     {
         HandleMouseDrag();
+        HandleMouseZoom();
         
     }
 
@@ -59,10 +67,24 @@ public class ModelCameraControls : MonoBehaviour
             float XaxisRotation = Input.GetAxis("Mouse X") * rotationSpeed;
             float YaxisRotation = Input.GetAxis("Mouse Y") * rotationSpeed;
 
-            Debug.Log(workSpace.transform.up);
             workSpace.transform.Rotate(rotXAxis, XaxisRotation);
             workSpace.transform.Rotate(rotYAxis, YaxisRotation, Space.World);
         }
+
+    }
+
+    void HandleMouseZoom()
+    {
+        if (!mouseInWorkArea())
+        {
+            return;
+        }
+
+        float zoomInput = -1 * Input.GetAxis("Mouse ScrollWheel");
+        Debug.Log(zoomInput);
+        zoomLevel += zoomInput * zoomSpeed;
+        zoomLevel = Mathf.Clamp(zoomLevel, MIN_ZOOM, MAX_ZOOM);
+        cam.orthographicSize = zoomLevel;
 
     }
 
