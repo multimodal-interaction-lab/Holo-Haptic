@@ -51,8 +51,8 @@ public class TransducerArrayManager : MonoBehaviour
             {
                 GameObject newTransducer = Instantiate(transducerObject, transform);
                 //Want the array to start at top left and end at bottom right
-                float xOffset = (j * TRANSDUCER_DIAMETER) - (((float)numCols - 1) / 2);
-                float zOffset = (((float)numRows - 1) / 2) - (i * TRANSDUCER_DIAMETER);
+                float xOffset = (j * TRANSDUCER_DIAMETER) - (((float)numCols - 1)*TRANSDUCER_DIAMETER / 2);
+                float zOffset = (((float)numRows - 1) * TRANSDUCER_DIAMETER / 2) - (i * TRANSDUCER_DIAMETER);
 
                 //Currently there isn't a yOffset
                 newTransducer.transform.localPosition = new Vector3(xOffset, 0f, zOffset);
