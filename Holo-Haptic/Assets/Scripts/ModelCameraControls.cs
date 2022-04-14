@@ -99,4 +99,52 @@ public class ModelCameraControls : MonoBehaviour
             return false;
         }
     }
+
+    public void YAxisPressed()
+    {
+        StopAllCoroutines();
+        StartCoroutine(RotateCoroutine(Quaternion.Euler(-90f, 0f, 0f)));
+    }
+
+    public void XAxisPressed()
+    {
+        StopAllCoroutines();
+        StartCoroutine(RotateCoroutine(Quaternion.Euler(0f, 90f, 0f)));
+    }
+
+    public void ZAxisPressed()
+    {
+        StopAllCoroutines();
+        StartCoroutine(RotateCoroutine(Quaternion.Euler(0f, 180f, 0f)));
+    }
+
+    public void YInversePressed()
+    {
+        StopAllCoroutines();
+        StartCoroutine(RotateCoroutine(Quaternion.Euler(90f, 0f, 0f)));
+    }
+
+    public void XInversePressed()
+    {
+        StopAllCoroutines();
+        StartCoroutine(RotateCoroutine(Quaternion.Euler(0f, -90f, 0f)));
+    }
+
+    public void ZInversePressed()
+    {
+        StopAllCoroutines();
+        StartCoroutine(RotateCoroutine(Quaternion.Euler(0f, 0f, 0f)));
+    }
+
+    IEnumerator RotateCoroutine(Quaternion targetRotation)
+    {
+        for(int i = 0; i < 50; i++)
+        {
+            workSpace.transform.rotation = Quaternion.Lerp(workSpace.transform.rotation, targetRotation, .1f);
+            yield return new WaitForSeconds(.01f);
+        }
+
+
+
+    }
 }
