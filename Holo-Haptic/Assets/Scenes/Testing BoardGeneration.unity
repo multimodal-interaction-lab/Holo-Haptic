@@ -3448,6 +3448,10 @@ PrefabInstance:
       propertyPath: m_PlaneDistance
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 8305544392431101342, guid: d3afffac169370249b63696f21f7e111, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.072
+      objectReference: {fileID: 0}
     - target: {fileID: 8305544393278071854, guid: d3afffac169370249b63696f21f7e111, type: 3}
       propertyPath: m_Name
       value: HapticModelViewSetup
