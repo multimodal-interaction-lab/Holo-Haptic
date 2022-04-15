@@ -49,7 +49,7 @@ public class TransducerArrayManager : MonoBehaviour
         {
             for(int j = 0; j < numCols; j++)
             {
-                GameObject newTransducer = Instantiate(transducerObject, transform);
+                GameObject newTransducer = Instantiate(transducerObject, newTransducerArray.transform);
                 //Want the array to start at top left and end at bottom right
                 float xOffset = (j * TRANSDUCER_DIAMETER) - (((float)numCols - 1)*TRANSDUCER_DIAMETER / 2);
                 float zOffset = (((float)numRows - 1) * TRANSDUCER_DIAMETER / 2) - (i * TRANSDUCER_DIAMETER);
@@ -65,11 +65,18 @@ public class TransducerArrayManager : MonoBehaviour
 
     void DestroyTransducerArray()
     {
-        var currentContainer = transform.Find(CONTAINER_NAME);
+        var currentContainer = transform.Find(CONTAINER_NAME + "(Clone)");
         if (currentContainer != null)
         {
-            Destroy(currentContainer);
+            Destroy(currentContainer.gameObject);
         }
         
+    }
+
+    public void GenerateTransducerArray(int rows, int cols)
+    {
+        this.numRows = rows;
+        this.numCols = cols;
+        GenerateTransducerArray();
     }
 }
