@@ -81,7 +81,7 @@ public class ModelCameraControls : MonoBehaviour
         }
 
         float zoomInput = -1 * Input.GetAxis("Mouse ScrollWheel");
-        Debug.Log(zoomInput);
+        //Debug.Log(zoomInput);
         zoomLevel += zoomInput * zoomSpeed;
         zoomLevel = Mathf.Clamp(zoomLevel, MIN_ZOOM, MAX_ZOOM);
         cam.orthographicSize = zoomLevel;
@@ -98,6 +98,25 @@ public class ModelCameraControls : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public void ZoomInPressed()
+    {
+        var zoomInput = -.1f;
+
+        zoomLevel += zoomInput * zoomSpeed;
+        zoomLevel = Mathf.Clamp(zoomLevel, MIN_ZOOM, MAX_ZOOM);
+        cam.orthographicSize = zoomLevel;
+    }
+
+    public void ZoomOutPressed()
+    {
+        var zoomInput = .1f;
+
+        zoomLevel += zoomInput * zoomSpeed;
+        zoomLevel = Mathf.Clamp(zoomLevel, MIN_ZOOM, MAX_ZOOM);
+        cam.orthographicSize = zoomLevel;
+
     }
 
     public void YAxisPressed()
