@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 110175305}
   - component: {fileID: 110175307}
   - component: {fileID: 110175306}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,7 +207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 182759305}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Rows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 228203176}
   - component: {fileID: 228203178}
   - component: {fileID: 228203177}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Columns Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -378,7 +378,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 328480337}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Sliding Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -483,7 +483,7 @@ GameObject:
   - component: {fileID: 389051603}
   - component: {fileID: 389051602}
   - component: {fileID: 389051601}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Scrollbar Horizontal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -553,8 +553,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 110175306}
   m_HandleRect: {fileID: 110175305}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.99999994
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -607,7 +607,7 @@ GameObject:
   m_Component:
   - component: {fileID: 498885465}
   - component: {fileID: 498885466}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -836,7 +836,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -860,7 +860,7 @@ GameObject:
   - component: {fileID: 722728709}
   - component: {fileID: 722728708}
   - component: {fileID: 722728707}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Create Array Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -990,7 +990,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 836396206}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1028,7 +1028,7 @@ GameObject:
   - component: {fileID: 923459724}
   - component: {fileID: 923459726}
   - component: {fileID: 923459725}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Rows Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1162,7 +1162,7 @@ GameObject:
   - component: {fileID: 1063726056}
   - component: {fileID: 1063726058}
   - component: {fileID: 1063726057}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1297,7 +1297,7 @@ GameObject:
   - component: {fileID: 1077341141}
   - component: {fileID: 1077341140}
   - component: {fileID: 1077341139}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Placeholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1488,7 +1488,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1558,7 +1558,7 @@ GameObject:
   - component: {fileID: 1216781083}
   - component: {fileID: 1216781082}
   - component: {fileID: 1216781081}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Generate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1691,7 +1691,7 @@ GameObject:
   - component: {fileID: 1248872634}
   - component: {fileID: 1248872633}
   - component: {fileID: 1248872632}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Scrollbar Vertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1762,7 +1762,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2023768292}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.2248
+  m_Size: 0.2036
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1817,7 +1817,7 @@ GameObject:
   - component: {fileID: 1311292522}
   - component: {fileID: 1311292521}
   - component: {fileID: 1311292520}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1926,7 +1926,7 @@ GameObject:
   - component: {fileID: 1311769182}
   - component: {fileID: 1311769181}
   - component: {fileID: 1311769180}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2024,7 +2024,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1388147482}
   - component: {fileID: 1388147483}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CreateArrayOptions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2079,7 +2079,7 @@ GameObject:
   - component: {fileID: 1487262747}
   - component: {fileID: 1487262749}
   - component: {fileID: 1487262748}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2214,7 +2214,7 @@ GameObject:
   - component: {fileID: 1487849990}
   - component: {fileID: 1487849989}
   - component: {fileID: 1487849988}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Viewport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2303,7 +2303,7 @@ GameObject:
   - component: {fileID: 1506644985}
   - component: {fileID: 1506644987}
   - component: {fileID: 1506644986}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2435,7 +2435,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1518585838}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Sliding Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2474,7 +2474,7 @@ GameObject:
   - component: {fileID: 1685632263}
   - component: {fileID: 1685632262}
   - component: {fileID: 1685632261}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2574,7 +2574,7 @@ GameObject:
   - component: {fileID: 1693294508}
   - component: {fileID: 1693294507}
   - component: {fileID: 1693294506}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Rows Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2747,7 +2747,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1784511370}
   - component: {fileID: 1784511371}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2811,7 +2811,7 @@ GameObject:
   - component: {fileID: 1904003575}
   - component: {fileID: 1904003577}
   - component: {fileID: 1904003576}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2943,7 +2943,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1966178563}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Columns
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2982,7 +2982,7 @@ GameObject:
   - component: {fileID: 2023768292}
   - component: {fileID: 2023768294}
   - component: {fileID: 2023768293}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3058,7 +3058,7 @@ GameObject:
   - component: {fileID: 2048354581}
   - component: {fileID: 2048354580}
   - component: {fileID: 2048354579}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Columns Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3233,7 +3233,7 @@ GameObject:
   - component: {fileID: 2100101813}
   - component: {fileID: 2100101812}
   - component: {fileID: 2100101811}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Placeholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3444,6 +3444,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1658621782, guid: d3afffac169370249b63696f21f7e111, type: 3}
+      propertyPath: m_PlaneDistance
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8305544393278071854, guid: d3afffac169370249b63696f21f7e111, type: 3}
       propertyPath: m_Name
       value: HapticModelViewSetup

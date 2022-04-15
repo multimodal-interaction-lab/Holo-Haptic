@@ -163,7 +163,7 @@ public class ModelCameraControls : MonoBehaviour
             yield return new WaitForSeconds(.01f);
         }
 
-
+        workSpace.transform.rotation = targetRotation;
 
     }
 }
