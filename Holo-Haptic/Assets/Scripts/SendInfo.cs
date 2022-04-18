@@ -9,7 +9,7 @@ public class SendInfo : MonoBehaviour
     SerialPort sp;
     float next_time;
     int ii = 0;
-    int x, y, z;
+    float x, y, z;
 
 
     // Start is called before the first frame update
@@ -17,9 +17,9 @@ public class SendInfo : MonoBehaviour
     {
         string the_com = "";
         next_time = Time.time;
-        x = 1;
-        y = 1;
-        z = 1;
+        x = transform.position.x;
+        y = transform.position.y;
+        z = transform.position.z;
         Debug.Log("Hello");
 
         foreach (string mysps in SerialPort.GetPortNames())
@@ -54,7 +54,6 @@ public class SendInfo : MonoBehaviour
                 sp.Write("X=" + x.ToString() + "Y=" + y.ToString() + "Z=" + z.ToString());
             }
             next_time = Time.time + 5;
-            if (++ii > 9) ii = 0;
         }
     }
 }
