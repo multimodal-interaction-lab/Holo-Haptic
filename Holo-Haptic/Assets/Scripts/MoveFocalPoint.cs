@@ -41,7 +41,7 @@ public class MoveFocalPoint : MonoBehaviour
             if (sp.IsOpen) 
             {
                 print("Writing ");
-                sp.Write("X=" + x.text + "Y=" + y.text + "Z=" + z.text + " I=" + System.Math.Round(intensitySlider.value).ToString());
+                sp.Write("X=" + x.text + "Y=" + y.text + "Z=" + z.text + " I=" + System.Math.Round(intensitySlider.value,2).ToString());
             }
         }
 
@@ -50,21 +50,17 @@ public class MoveFocalPoint : MonoBehaviour
     public void incrementVal(InputField g)
     {
         g.text = (float.Parse(g.text) + 0.01f).ToString();
-        if (!sp.IsOpen)
-        {
-            sp.Open();
-            print("opened sp");
-        }
-        if (sp.IsOpen)
-        {
-            print("Writing ");
-            sp.Write("X=" + x.text + "Y=" + y.text + "Z=" + z.text + " I=" + System.Math.Round(intensitySlider.value).ToString());
-        }
+        sendData();
     }
 
     public void decrementVal(InputField g)
     {
         g.text = (float.Parse(g.text) - 0.01f).ToString();
+        sendData();   
+    }
+
+    public void sendData()
+    {
         if (!sp.IsOpen)
         {
             sp.Open();
@@ -73,9 +69,10 @@ public class MoveFocalPoint : MonoBehaviour
         if (sp.IsOpen)
         {
             print("Writing ");
-            sp.Write("X=" + x.text + "Y=" + y.text + "Z=" + z.text + " I=" + System.Math.Round(intensitySlider.value).ToString());
+            sp.Write("X=" + x.text + "Y=" + y.text + "Z=" + z.text + " I=" + System.Math.Round(intensitySlider.value, 2).ToString());
         }
     }
+
 
     void Update()
     {
