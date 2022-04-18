@@ -12,6 +12,7 @@ public class MoveFocalPoint : MonoBehaviour
     public InputField y;
     public InputField z;
     public GameObject hapticboard;
+    public Slider intensitySlider;
     SerialPort sp;
 
     void Start()
@@ -40,7 +41,7 @@ public class MoveFocalPoint : MonoBehaviour
             if (sp.IsOpen) 
             {
                 print("Writing ");
-                sp.Write("X=" + x.text + "Y=" + y.text + "Z=" + z.text);
+                sp.Write("X=" + x.text + "Y=" + y.text + "Z=" + z.text + " I=" + System.Math.Round(intensitySlider.value).ToString());
             }
         }
 
@@ -57,7 +58,7 @@ public class MoveFocalPoint : MonoBehaviour
         if (sp.IsOpen)
         {
             print("Writing ");
-            sp.Write("X=" + x.text + "Y=" + y.text + "Z=" + z.text);
+            sp.Write("X=" + x.text + "Y=" + y.text + "Z=" + z.text + " I=" + System.Math.Round(intensitySlider.value).ToString());
         }
     }
 
@@ -72,7 +73,7 @@ public class MoveFocalPoint : MonoBehaviour
         if (sp.IsOpen)
         {
             print("Writing ");
-            sp.Write("X=" + x.text + " Y=" + y.text + " Z=" + z.text);
+            sp.Write("X=" + x.text + "Y=" + y.text + "Z=" + z.text + " I=" + System.Math.Round(intensitySlider.value).ToString());
         }
     }
 
