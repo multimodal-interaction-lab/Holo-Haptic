@@ -21,9 +21,11 @@ public class MoveFocalPoint : MonoBehaviour
 
         string the_com = "";
 
-        x.text = System.Math.Round(transform.position.x, 2).ToString();
-        y.text = System.Math.Round(transform.position.y, 2).ToString();
-        z.text = System.Math.Round(transform.position.z, 2).ToString();
+        Vector3 relativePos = transform.localPosition - hapticboard.transform.localPosition;
+
+        x.text = System.Math.Round(relativePos.x, 2).ToString();
+        y.text = System.Math.Round(relativePos.y, 2).ToString();
+        z.text = System.Math.Round(relativePos.z, 2).ToString();
 
         foreach (string mysps in SerialPort.GetPortNames())
         {
@@ -49,13 +51,13 @@ public class MoveFocalPoint : MonoBehaviour
 
     public void incrementVal(InputField g)
     {
-        g.text = (float.Parse(g.text) + 0.01f).ToString();
+        g.text = System.Math.Round(float.Parse(g.text) + 0.01f, 2).ToString();
         sendData();
     }
 
     public void decrementVal(InputField g)
     {
-        g.text = (float.Parse(g.text) - 0.01f).ToString();
+        g.text = System.Math.Round(float.Parse(g.text) - 0.01f, 2).ToString();
         sendData();   
     }
 
@@ -80,7 +82,8 @@ public class MoveFocalPoint : MonoBehaviour
         float y_pos = float.Parse(y.text);
         float z_pos = float.Parse(z.text);
 
-        transform.Translate(x_pos - transform.position.x, y_pos - transform.position.y, z_pos - transform.position.z);
+        //transform.Translate(x_pos - transform.position.x, y_pos - transform.position.y, z_pos - transform.position.z);
+        transform.localPosition = new Vector3(x_pos + hapticboard.transform.localPosition.x, y_pos + hapticboard.transform.localPosition.y, z_pos + hapticboard.transform.localPosition.z);
 
     }
 }
