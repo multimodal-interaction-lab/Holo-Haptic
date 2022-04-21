@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 using System.IO.Ports;
 using TMPro;
+
 
 public class MoveFocalPoint : MonoBehaviour
 {
@@ -18,6 +20,9 @@ public class MoveFocalPoint : MonoBehaviour
 
     float minIntensity = 0f;
     float maxIntensity = 1f;
+    public int baudrate = 115200;
+    public bool readFromFile;
+    private bool noPortsFound;
 
     SerialPort sp;
 
@@ -37,7 +42,7 @@ public class MoveFocalPoint : MonoBehaviour
         intensitySlider.minValue = minIntensity;
         intensitySlider.maxValue = maxIntensity;
 
-        foreach (string mysps in SerialPort.GetPortNames())
+/*        foreach (string mysps in SerialPort.GetPortNames())
         {
             print(mysps);
             if (mysps != "COM1") { the_com = mysps; break; }
@@ -54,6 +59,49 @@ public class MoveFocalPoint : MonoBehaviour
             {
                 print("Writing ");
                 sp.Write("X=" + x.text + "Y=" + y.text + "Z=" + z.text + " I=" + System.Math.Round(intensitySlider.value,2).ToString());
+            }
+        }*/
+
+
+        if (readFromFile)
+        {
+            the_com = File.ReadAllText("port.ini");
+
+            if (!the_com.StartsWith("COM"))
+            {
+                noPortsFound = true;
+                Debug.Log("No port found!");
+            }
+            else
+            {
+                try
+                {
+                    OpenPort(the_com, baudrate);
+                    sendData();
+                    noPortsFound = false;
+                }
+                catch (System.Exception e)
+                {
+                    noPortsFound = true;
+                    Debug.Log("Error opening port: " + e.Message);
+                }
+            }
+        }
+        else
+        {
+            string[] ports = SerialPort.GetPortNames();
+            Debug.Log(ports);
+            if (ports.Length < 1)
+            {
+                noPortsFound = true;
+                Debug.Log("No port found!");
+            }
+            else
+            {
+                noPortsFound = false;
+                the_com = ports[0];
+                OpenPort(the_com, baudrate);
+                sendData();
             }
         }
 
@@ -86,6 +134,20 @@ public class MoveFocalPoint : MonoBehaviour
         sendData();
     }
 
+
+    public void OpenPort(string portname, int baudrate)
+    {
+        sp = new SerialPort(portname, baudrate);
+        sp.Open();
+        sp.ReadTimeout = 100;
+        sp.Handshake = Handshake.None;
+        if (sp.IsOpen)
+        {
+            print("Open");
+        }
+    }
+
+
     public void sendData()
     {
         if (!sp.IsOpen)
@@ -96,7 +158,7 @@ public class MoveFocalPoint : MonoBehaviour
         if (sp.IsOpen)
         {
             print("Writing ");
-            sp.Write("X=" + x.text + "Y=" + y.text + "Z=" + z.text + " I=" + System.Math.Round(intensitySlider.value, 2).ToString());
+            sp.Write("X=" + x.text + "Y=" + z.text + "Z=" + y.text + " I=" + System.Math.Round(intensitySlider.value, 2).ToString());
         }
     }
 
