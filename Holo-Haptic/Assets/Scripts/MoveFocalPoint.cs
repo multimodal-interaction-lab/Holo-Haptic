@@ -17,12 +17,20 @@ public class MoveFocalPoint : MonoBehaviour
     public GameObject hapticboard;
     public Slider intensitySlider;
     public TMP_InputField intensityInput;
+    public GameObject pivotPoint;
+    private Vector3 axis = Vector3.right;
+    public Toggle line;
+    public Toggle circleAnim;
+    public Slider speedSlider;
 
     float minIntensity = 0f;
     float maxIntensity = 1f;
     public int baudrate = 115200;
     public bool readFromFile;
     private bool noPortsFound;
+    public bool animationOn = false;
+    private bool resetPos = true;
+   
 
     SerialPort sp;
 
@@ -172,16 +180,67 @@ public class MoveFocalPoint : MonoBehaviour
 
         if (xParse && yParse && zParse)
         {
-
             transform.localPosition = new Vector3(x_pos + hapticboard.transform.localPosition.x, y_pos + hapticboard.transform.localPosition.y, z_pos + hapticboard.transform.localPosition.z);
         }
 
     }
 
+    void CircleAnimation()
+    {
+        if(resetPos)
+        {
+            transform.localPosition = new Vector3(0.0f, 0.15f, 0.0f);
+            resetPos = false;
+        }
+        pivotPoint.GetComponent<MeshRenderer>().enabled = true;
+        transform.GetComponent<MeshRenderer>().enabled = false;
+        transform.Rotate(0, speedSlider.value, 0);
+    }
+
+    void LineAnimation()
+    {
+        if (transform.localPosition.x >= 0.08)
+        {
+            axis = Vector3.left;
+        }
+        if (transform.localPosition.x <= -0.08)
+        {
+            axis = Vector3.right;
+        }
+        transform.Translate(axis * speedSlider.value * Time.deltaTime, Space.Self);
+        if(!resetPos)
+        {
+            resetPos = true;
+        }
+    }
+
     void Update()
     {
 
-        UpdatePosition();
+        if (!animationOn)
+        {
+            UpdatePosition();
+        }
+        if(Input.GetKey(KeyCode.A))
+        {
+            animationOn = true;
+        }
+
+        if (Input.GetKey(KeyCode.U))
+        {
+            animationOn = false;
+        }
+
+        if (line.isOn)
+        {
+           LineAnimation();
+        }
+        if(circleAnim.isOn)
+        {
+            CircleAnimation();
+        }
+        
+        
 
     }
 }

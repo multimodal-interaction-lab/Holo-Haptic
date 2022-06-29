@@ -12,7 +12,7 @@ public class RightMenuManager : MonoBehaviour
 
     public void HideMenus()
     {
-        foreach(Transform t in canvasObj.transform)
+        foreach(Transform t in canvasObj.transform) 
         {
             t.gameObject.SetActive(false);
         }
