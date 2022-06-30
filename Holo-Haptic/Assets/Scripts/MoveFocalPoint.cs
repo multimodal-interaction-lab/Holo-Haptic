@@ -22,7 +22,11 @@ public class MoveFocalPoint : MonoBehaviour
     public Toggle line;
     public Toggle circleAnim;
     public Slider speedSlider;
+    public Slider RadiusSlider;
 
+    private float ElevationOffset = 0;
+    private float angle;
+    private Vector3 positionOffset;
     float minIntensity = 0f;
     float maxIntensity = 1f;
     public int baudrate = 115200;
@@ -112,7 +116,6 @@ public class MoveFocalPoint : MonoBehaviour
                 sendData();
             }
         }
-
     }
 
     public void incrementVal(TMP_InputField g)
@@ -187,31 +190,26 @@ public class MoveFocalPoint : MonoBehaviour
 
     void CircleAnimation()
     {
+        RadiusSlider.maxValue = ((hapticboard.GetComponent<TransducerArrayManager>().getCol())/2) * 0.1f;
         if(resetPos)
         {
             transform.localPosition = new Vector3(0.0f, 0.15f, 0.0f);
             resetPos = false;
         }
-        pivotPoint.GetComponent<MeshRenderer>().enabled = true;
-        transform.GetComponent<MeshRenderer>().enabled = false;
-        transform.Rotate(0, speedSlider.value, 0);
+        positionOffset.Set(
+         Mathf.Cos( angle ) * RadiusSlider.value*.1f,
+         ElevationOffset,
+         Mathf.Sin( angle ) * RadiusSlider.value *.1f
+        );
+        transform.Translate(positionOffset,Space.Self);
+        angle += Time.deltaTime * speedSlider.value;
     }
 
     void LineAnimation()
     {
-        if (transform.localPosition.x >= 0.08)
-        {
-            axis = Vector3.left;
-        }
-        if (transform.localPosition.x <= -0.08)
-        {
-            axis = Vector3.right;
-        }
-        transform.Translate(axis * speedSlider.value * Time.deltaTime, Space.Self);
-        if(!resetPos)
-        {
-            resetPos = true;
-        }
+        int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
+        float lineStart = (-1 * (col /2) * 0.01f);
+        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), transform.localPosition.y,transform.localPosition.x);
     }
 
     void Update()
@@ -238,6 +236,10 @@ public class MoveFocalPoint : MonoBehaviour
         if(circleAnim.isOn)
         {
             CircleAnimation();
+            //RadiusSlider.setActive(true);
+        }
+        else{
+            //RadiusSlider.setActive(true);
         }
         
         

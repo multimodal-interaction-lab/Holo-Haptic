@@ -79,4 +79,8 @@ public class TransducerArrayManager : MonoBehaviour
         this.numCols = cols;
         GenerateTransducerArray();
     }
+    public int getCol()
+    {
+        return numCols;
+    }
 }
