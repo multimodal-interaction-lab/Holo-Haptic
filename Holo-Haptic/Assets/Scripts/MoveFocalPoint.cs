@@ -21,6 +21,7 @@ public class MoveFocalPoint : MonoBehaviour
     private Vector3 axis = Vector3.right;
     public Toggle line;
     public Toggle circleAnim;
+    public Toggle squiggle;
     public Slider speedSlider;
     public Slider RadiusSlider;
 
@@ -222,6 +223,7 @@ public class MoveFocalPoint : MonoBehaviour
 
         transform.Translate(Vector3.forward * Time.deltaTime * speedSlider.value * 1);
         transform.Translate(Vector3.left * Time.deltaTime * speedSlider.value * 1);
+        int b = 1;
     }
 
     void Update()
@@ -250,10 +252,9 @@ public class MoveFocalPoint : MonoBehaviour
             CircleAnimation();
             //RadiusSlider.setActive(true);
         }
-        else{
-            //RadiusSlider.setActive(true);
+        if(squiggle.isOn){
+            SquiggleAnimation();
         }
-        
         
 
     }
