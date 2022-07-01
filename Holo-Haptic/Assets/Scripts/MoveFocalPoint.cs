@@ -22,6 +22,7 @@ public class MoveFocalPoint : MonoBehaviour
     public Toggle line;
     public Toggle circleAnim;
     public Toggle squiggle;
+    public Toggle zigzag;
     public Slider speedSlider;
     public Slider RadiusSlider;
 
@@ -212,19 +213,21 @@ public class MoveFocalPoint : MonoBehaviour
     {
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
-        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), transform.localPosition.y,transform.localPosition.z);
+        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), transform.localPosition.y, transform.localPosition.z);
     }
 
     void SquiggleAnimation(){
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
-        //transform.Translate(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), Time.deltaTime, 0, Space.Self);
-        //transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), speedSlider.value * Time.time, transform.localPosition.z);
-
-        transform.Translate(Vector3.forward * Time.deltaTime * speedSlider.value * 1);
-        transform.Translate(Vector3.left * Time.deltaTime * speedSlider.value * 1);
-        int b = 1;
+        transform.localPosition = new Vector3(lineStart + Mathf.Sin(Time.time), 0.0f, 0.0f);
     }
+
+    void ZigZagAnimation(){
+        int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
+        float lineStart = (-1 * (col /2) * 0.01f);
+        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time * 0.5f, col* 0.01f), transform.localPosition.y, lineStart + Mathf.PingPong(speedSlider.value * Time.time * 3, col* 0.01f));
+    }
+
 
     void Update()
     {
@@ -255,7 +258,9 @@ public class MoveFocalPoint : MonoBehaviour
         if(squiggle.isOn){
             SquiggleAnimation();
         }
-        
+        if(zigzag.isOn){
+            ZigZagAnimation();
+        }
 
     }
 }
