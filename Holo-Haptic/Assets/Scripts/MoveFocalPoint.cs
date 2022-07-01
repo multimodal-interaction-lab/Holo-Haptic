@@ -225,6 +225,7 @@ public class MoveFocalPoint : MonoBehaviour
     void ZigZagAnimation(){
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
+        int a = 1;
         transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time * 0.5f, col* 0.01f), transform.localPosition.y, lineStart + Mathf.PingPong(speedSlider.value * Time.time * 3, col* 0.01f));
     }
 
