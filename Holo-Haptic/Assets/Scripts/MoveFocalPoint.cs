@@ -202,14 +202,26 @@ public class MoveFocalPoint : MonoBehaviour
          Mathf.Sin( angle ) * RadiusSlider.value *.1f
         );
         transform.Translate(positionOffset,Space.Self);
-        angle += Time.deltaTime * speedSlider.value;
+        angle += Time.deltaTime * speedSlider.value * 3;
     }
 
+
+    //Made it so that the line animation starts on the far left of the board and moves all the way to the other side; the length of the distance traveled changes with the board size
     void LineAnimation()
     {
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
-        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), transform.localPosition.y,transform.localPosition.x);
+        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), transform.localPosition.y,transform.localPosition.z);
+    }
+
+    void SquiggleAnimation(){
+        int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
+        float lineStart = (-1 * (col /2) * 0.01f);
+        //transform.Translate(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), Time.deltaTime, 0, Space.Self);
+        //transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), speedSlider.value * Time.time, transform.localPosition.z);
+
+        transform.Translate(Vector3.forward * Time.deltaTime * speedSlider.value * 1);
+        transform.Translate(Vector3.left * Time.deltaTime * speedSlider.value * 1);
     }
 
     void Update()
