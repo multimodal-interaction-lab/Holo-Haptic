@@ -57,7 +57,8 @@ public class MoveFocalPoint : MonoBehaviour
 
         intensitySlider.minValue = minIntensity;
         intensitySlider.maxValue = maxIntensity;
-        InvokeRepeating("pulseAnimation", 0 , 5f * speedSlider.value);
+        speedSlider.minValue = .2f;
+        InvokeRepeating("pulseAnimation", 0 , 1f);
 
 /*        foreach (string mysps in SerialPort.GetPortNames())
         {
@@ -234,23 +235,19 @@ public class MoveFocalPoint : MonoBehaviour
     }
 
     void pulseAnimation(){
-        /*while(runPulse){
-            focalPoint.GetComponent<MeshRenderer>().enabled = false;
-            //focalPoint.SetActive(false);
-            yield return new WaitForSeconds(2f);
-            focalPoint.GetComponent<MeshRenderer>().enabled = true;
-            //focalPoint.SetActive(false);
-            yield return new WaitForSeconds(2f);
-
-
-            yield return new WaitForSeconds(1);
-            fadeIn = !fadeIn;
-        } */
         if(pulseAnim.isOn){
             if(focalPoint.activeSelf)
                 focalPoint.SetActive(false);
             else
                 focalPoint.SetActive(true);
+        }
+    }
+    
+    public void SpeedValueChanged()
+    {
+        if(pulseAnim.isOn){
+            CancelInvoke();
+            InvokeRepeating("pulseAnimation", 0 , 5f / (speedSlider.value*10));
         }
     }
 
