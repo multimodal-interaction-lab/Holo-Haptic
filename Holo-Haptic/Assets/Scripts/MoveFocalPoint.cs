@@ -23,8 +23,10 @@ public class MoveFocalPoint : MonoBehaviour
     public Toggle circleAnim;
     public Toggle squiggle;
     public Toggle zigzag;
+    public Toggle pulseAnim;
     public Slider speedSlider;
     public Slider RadiusSlider;
+    public GameObject focalPoint;
 
     private float ElevationOffset = 0;
     private float angle;
@@ -223,16 +225,24 @@ public class MoveFocalPoint : MonoBehaviour
     }
 
     void ZigZagAnimation(){
+        speedSlider.minValue = .01f;
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
         int a = 1;
         transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time * 0.5f, col* 0.01f), transform.localPosition.y, lineStart + Mathf.PingPong(speedSlider.value * Time.time * 3, col* 0.01f));
     }
 
+    void pulseAnimation(){
+        speedSlider.minValue = .01f;
+        int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
+        float lineStart = (-1 * (col /2) * 0.01f);
+        int a = 1;
+        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time * 0.5f, col* 0.01f), transform.localPosition.y, lineStart + Mathf.PingPong(speedSlider.value * Time.time * 3, col* 0.01f));
+    }
 
     void Update()
     {
-
+        speedSlider.minValue= 0f;
         if (!animationOn)
         {
             UpdatePosition();
@@ -254,13 +264,15 @@ public class MoveFocalPoint : MonoBehaviour
         if(circleAnim.isOn)
         {
             CircleAnimation();
-            //RadiusSlider.setActive(true);
         }
         if(squiggle.isOn){
-            SquiggleAnimation();
+            ZigZagAnimation();
         }
         if(zigzag.isOn){
             ZigZagAnimation();
+        }
+        if(pulseAnim.isOn){
+            pulseAnimation();
         }
 
     }
