@@ -57,6 +57,7 @@ public class MoveFocalPoint : MonoBehaviour
 
         intensitySlider.minValue = minIntensity;
         intensitySlider.maxValue = maxIntensity;
+        InvokeRepeating("pulseAnimation", 0 , 5f * speedSlider.value);
 
 /*        foreach (string mysps in SerialPort.GetPortNames())
         {
@@ -233,11 +234,24 @@ public class MoveFocalPoint : MonoBehaviour
     }
 
     void pulseAnimation(){
-        speedSlider.minValue = .01f;
-        int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
-        float lineStart = (-1 * (col /2) * 0.01f);
-        int a = 1;
-        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time * 0.5f, col* 0.01f), transform.localPosition.y, lineStart + Mathf.PingPong(speedSlider.value * Time.time * 3, col* 0.01f));
+        /*while(runPulse){
+            focalPoint.GetComponent<MeshRenderer>().enabled = false;
+            //focalPoint.SetActive(false);
+            yield return new WaitForSeconds(2f);
+            focalPoint.GetComponent<MeshRenderer>().enabled = true;
+            //focalPoint.SetActive(false);
+            yield return new WaitForSeconds(2f);
+
+
+            yield return new WaitForSeconds(1);
+            fadeIn = !fadeIn;
+        } */
+        if(pulseAnim.isOn){
+            if(focalPoint.activeSelf)
+                focalPoint.SetActive(false);
+            else
+                focalPoint.SetActive(true);
+        }
     }
 
     void Update()
@@ -268,12 +282,9 @@ public class MoveFocalPoint : MonoBehaviour
         if(squiggle.isOn){
             ZigZagAnimation();
         }
-        if(zigzag.isOn){
-            ZigZagAnimation();
-        }
         if(pulseAnim.isOn){
-            pulseAnimation();
+            
         }
-
+        
     }
 }
