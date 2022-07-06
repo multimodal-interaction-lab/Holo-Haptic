@@ -20,7 +20,7 @@ public class MoveFocalPoint : MonoBehaviour
     private Vector3 axis = Vector3.right;
     public Toggle line;
     public Toggle circleAnim;
-    public Toggle squiggle;
+    public Toggle zigzagAnim;
     public Toggle blinkAnim;
     public Toggle randomAnim;
     public Slider speedSlider;
@@ -216,7 +216,7 @@ public class MoveFocalPoint : MonoBehaviour
         transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), transform.localPosition.y, transform.localPosition.z);
     }
 
-    void SquiggleAnimation(){
+    void ZigzagAnimation(){
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
         int a = 1;
@@ -234,7 +234,7 @@ public class MoveFocalPoint : MonoBehaviour
             focalPoint.SetActive(true);
         }
     }
-    
+
     public void SpeedValueChanged()
     {
         if(blinkAnim.isOn | randomAnim.isOn){
@@ -251,7 +251,7 @@ public class MoveFocalPoint : MonoBehaviour
             int row = hapticboard.GetComponent<TransducerArrayManager>().getRow();
             float xvalue = (-1 * (col /2) * 0.01f);
             float zvalue  = (-1 * (row/2)*0.01f);
-            var position = new Vector3(Random.Range(xvalue,Mathf.Abs(xvalue)),0,Random.Range(zvalue,Mathf.Abs(zvalue)));
+            var position = new Vector3(Random.Range(xvalue,Mathf.Abs(xvalue)),.15f,Random.Range(zvalue,Mathf.Abs(zvalue)));
             transform.localPosition = position;
         }    
     }
@@ -282,8 +282,15 @@ public class MoveFocalPoint : MonoBehaviour
         {
             CircleAnimation();
         }
-        if(squiggle.isOn){
-            SquiggleAnimation();
+        if(zigzagAnim.isOn){
+            ZigzagAnimation();
         }    
+       /* if(randomAnim.isOn)
+        {
+            squiggle.isOn = false;
+            circleAnim.isOn = false;
+            line.isOn = false;
+        }*/
+        
     }
 }
