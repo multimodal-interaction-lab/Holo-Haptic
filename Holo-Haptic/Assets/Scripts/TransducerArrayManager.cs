@@ -83,4 +83,8 @@ public class TransducerArrayManager : MonoBehaviour
     {
         return numCols;
     }
+    public int getRow()
+    {
+        return numRows;
+    }
 }

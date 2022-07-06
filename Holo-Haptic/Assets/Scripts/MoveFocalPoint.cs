@@ -6,7 +6,6 @@ using System.IO;
 using System.IO.Ports;
 using TMPro;
 
-
 public class MoveFocalPoint : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -22,12 +21,13 @@ public class MoveFocalPoint : MonoBehaviour
     public Toggle line;
     public Toggle circleAnim;
     public Toggle squiggle;
-    public Toggle zigzag;
-    public Toggle pulseAnim;
+    public Toggle blinkAnim;
+    public Toggle randomAnim;
     public Slider speedSlider;
     public Slider RadiusSlider;
     public GameObject focalPoint;
 
+    private float x_pos, y_pos, z_pos;
     private float ElevationOffset = 0;
     private float angle;
     private Vector3 positionOffset;
@@ -58,7 +58,8 @@ public class MoveFocalPoint : MonoBehaviour
         intensitySlider.minValue = minIntensity;
         intensitySlider.maxValue = maxIntensity;
         speedSlider.minValue = .2f;
-        InvokeRepeating("pulseAnimation", 0 , 1f);
+        InvokeRepeating("BlinkAnimation", 0 , 1f);
+        InvokeRepeating("RandomAnimation", 0 , 1f);
 
 /*        foreach (string mysps in SerialPort.GetPortNames())
         {
@@ -181,7 +182,6 @@ public class MoveFocalPoint : MonoBehaviour
 
     void UpdatePosition()
     {
-        float x_pos, y_pos, z_pos;
 
         bool xParse = float.TryParse(x.text, out x_pos);
         bool yParse = float.TryParse(y.text, out y_pos);
@@ -202,11 +202,7 @@ public class MoveFocalPoint : MonoBehaviour
             transform.localPosition = new Vector3(0.0f, 0.15f, 0.0f);
             resetPos = false;
         }
-        positionOffset.Set(
-         Mathf.Cos( angle ) * RadiusSlider.value*.1f,
-         ElevationOffset,
-         Mathf.Sin( angle ) * RadiusSlider.value *.1f
-        );
+        positionOffset.Set(Mathf.Cos( angle ) * RadiusSlider.value*.1f,ElevationOffset, Mathf.Sin( angle ) * RadiusSlider.value *.1f);
         transform.Translate(positionOffset,Space.Self);
         angle += Time.deltaTime * speedSlider.value * 3;
     }
@@ -223,41 +219,51 @@ public class MoveFocalPoint : MonoBehaviour
     void SquiggleAnimation(){
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
-        transform.localPosition = new Vector3(lineStart + Mathf.Sin(Time.time), 0.0f, 0.0f);
-    }
-
-    void ZigZagAnimation(){
-        speedSlider.minValue = .01f;
-        int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
-        float lineStart = (-1 * (col /2) * 0.01f);
         int a = 1;
         transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time * 0.5f, col* 0.01f), transform.localPosition.y, lineStart + Mathf.PingPong(speedSlider.value * Time.time * 3, col* 0.01f));
     }
-
-    void pulseAnimation(){
-        if(pulseAnim.isOn){
+    void BlinkAnimation(){
+        if(blinkAnim.isOn){
             if(focalPoint.activeSelf)
                 focalPoint.SetActive(false);
             else
                 focalPoint.SetActive(true);
         }
+        else
+        {
+            focalPoint.SetActive(true);
+        }
     }
     
     public void SpeedValueChanged()
     {
-        if(pulseAnim.isOn){
+        if(blinkAnim.isOn | randomAnim.isOn){
             CancelInvoke();
-            InvokeRepeating("pulseAnimation", 0 , 5f / (speedSlider.value*10));
+            InvokeRepeating("BlinkAnimation", 0 , 5f / (speedSlider.value*10));
+            InvokeRepeating("RandomAnimation", 0 , 5f / (speedSlider.value*10));
         }
+    }
+
+    void RandomAnimation()
+    {
+        if(randomAnim.isOn){
+            int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
+            int row = hapticboard.GetComponent<TransducerArrayManager>().getRow();
+            float xvalue = (-1 * (col /2) * 0.01f);
+            float zvalue  = (-1 * (row/2)*0.01f);
+            var position = new Vector3(Random.Range(xvalue,Mathf.Abs(xvalue)),0,Random.Range(zvalue,Mathf.Abs(zvalue)));
+            transform.localPosition = position;
+        }    
     }
 
     void Update()
     {
         speedSlider.minValue= 0f;
-        if (!animationOn)
+        if (!animationOn & !randomAnim.isOn)
         {
             UpdatePosition();
         }
+        
         if(Input.GetKey(KeyCode.A))
         {
             animationOn = true;
@@ -277,11 +283,7 @@ public class MoveFocalPoint : MonoBehaviour
             CircleAnimation();
         }
         if(squiggle.isOn){
-            ZigZagAnimation();
-        }
-        if(pulseAnim.isOn){
-            
-        }
-        
+            SquiggleAnimation();
+        }    
     }
 }
