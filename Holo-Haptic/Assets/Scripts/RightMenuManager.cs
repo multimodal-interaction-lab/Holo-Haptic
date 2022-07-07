@@ -10,11 +10,10 @@ public class RightMenuManager : MonoBehaviour
         canvasObj = GetComponentInChildren<Canvas>().gameObject;
     }
 
-    public void HideMenus()
+    public void HideMenus(GameObject currentmenu, GameObject OptionOpened)
     {
-        foreach(Transform t in canvasObj.transform) 
-        {
-            t.gameObject.SetActive(false);
-        }
+        gameObject.SetActive(true);
+        currentmenu.SetActive(false);
+        OptionOpened.SetActive(true);
     }
 }
