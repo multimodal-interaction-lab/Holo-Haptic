@@ -6,9 +6,9 @@ using TMPro;
 public class CreateArrayMenu : MonoBehaviour
 {
     [SerializeField]
-    TMP_InputField rowInput;
+    TMP_Text rowInput;
     [SerializeField]
-    TMP_InputField colInput;
+    TMP_Text colInput;
     [SerializeField]
     TransducerArrayManager transCntrl;
    
