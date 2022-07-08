@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -629,6 +629,8 @@ GameObject:
   - component: {fileID: 143816651}
   - component: {fileID: 143816650}
   - component: {fileID: 143816649}
+  - component: {fileID: 143816652}
+  - component: {fileID: 143816653}
   m_Layer: 5
   m_Name: Create Array
   m_TagString: Untagged
@@ -774,6 +776,48 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 143816647}
   m_CullTransparentMesh: 1
+--- !u!114 &143816652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 143816647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50136661a5f98b14e9b67e5320f9393c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimationOptions: {fileID: 0}
+  LefthandMenu: {fileID: 0}
+  RighthandMenu: {fileID: 0}
+  button: {fileID: 0}
+--- !u!61 &143816653
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 143816647}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.636261, y: -0.08225489}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 155.64526, y: 26.986877}
+  m_EdgeRadius: 0
 --- !u!1 &145150656
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,6 +830,8 @@ GameObject:
   - component: {fileID: 145150660}
   - component: {fileID: 145150659}
   - component: {fileID: 145150658}
+  - component: {fileID: 145150662}
+  - component: {fileID: 145150661}
   m_Layer: 5
   m_Name: Animation
   m_TagString: Untagged
@@ -931,6 +977,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 145150656}
   m_CullTransparentMesh: 1
+--- !u!65 &145150661
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145150656}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 159.87686, y: 27.46992, z: 0}
+  m_Center: {x: 0.18832512, y: 0.19868416, z: 0.5}
+--- !u!114 &145150662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145150656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50136661a5f98b14e9b67e5320f9393c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimationOptions: {fileID: 1730163848}
+  LefthandMenu: {fileID: 466230922}
+  RighthandMenu: {fileID: 1492071261}
+  button: {fileID: 145150658}
 --- !u!1 &157176029
 GameObject:
   m_ObjectHideFlags: 0
