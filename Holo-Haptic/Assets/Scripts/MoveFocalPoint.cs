@@ -23,7 +23,7 @@ public class MoveFocalPoint : MonoBehaviour
     public Toggle zigzagAnim;
     public Toggle blinkAnim;
     public Toggle randomAnim;
-    public Slider speedSlider;
+    public TMP_Text speedText;
     public Slider RadiusSlider;
     public GameObject focalPoint;
 
@@ -38,6 +38,7 @@ public class MoveFocalPoint : MonoBehaviour
     private bool noPortsFound;
     public bool animationOn = false;
     private bool resetPos = true;
+    private float speed;
    
 
     SerialPort sp;
@@ -45,12 +46,13 @@ public class MoveFocalPoint : MonoBehaviour
     void Start()
     {
         //Debug.Log(transform.position.x.ToString());
+        //Starts a repeat for the blink and random aniimation that only is on if the toggle is on
         InvokeRepeating("BlinkAnimation", 0 , 1f);
         InvokeRepeating("RandomAnimation", 0 , 1f);
-        
-        string the_com = "";
 
+        string the_com = "";
         Vector3 relativePos = transform.localPosition - hapticboard.transform.localPosition;
+
         x.text = System.Math.Round(relativePos.x, 2).ToString();
         y.text = System.Math.Round(relativePos.y, 2).ToString();
         z.text = System.Math.Round(relativePos.z, 2).ToString();
@@ -58,8 +60,6 @@ public class MoveFocalPoint : MonoBehaviour
 
         intensitySlider.minValue = minIntensity;
         intensitySlider.maxValue = maxIntensity;
-        speedSlider.minValue = .2f;
-
 /*        foreach (string mysps in SerialPort.GetPortNames())
         {
             print(mysps);
@@ -190,7 +190,6 @@ public class MoveFocalPoint : MonoBehaviour
         {
             transform.localPosition = new Vector3(x_pos + hapticboard.transform.localPosition.x, y_pos + hapticboard.transform.localPosition.y, z_pos + hapticboard.transform.localPosition.z);
         }
-
     }
 
     void CircleAnimation()
@@ -203,7 +202,7 @@ public class MoveFocalPoint : MonoBehaviour
         }
         positionOffset.Set(Mathf.Cos( angle ) * RadiusSlider.value*.1f,ElevationOffset, Mathf.Sin( angle ) * RadiusSlider.value *.1f);
         transform.Translate(positionOffset,Space.Self);
-        angle += Time.deltaTime * speedSlider.value * 3;
+        angle += Time.deltaTime * speed * 3;
     }
 
 
@@ -212,14 +211,14 @@ public class MoveFocalPoint : MonoBehaviour
     {
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
-        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), transform.localPosition.y, transform.localPosition.z);
+        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speed * Time.time, col* 0.01f), transform.localPosition.y, transform.localPosition.z);
     }
 
     void ZigzagAnimation(){
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
         int a = 1;
-        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time * 0.5f, col* 0.01f), transform.localPosition.y, lineStart + Mathf.PingPong(speedSlider.value * Time.time * 3, col* 0.01f));
+        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speed * Time.time * 0.5f, col* 0.01f), transform.localPosition.y, lineStart + Mathf.PingPong(speed * Time.time * 3, col* 0.01f));
     }
     void BlinkAnimation(){
         if(blinkAnim.isOn){
@@ -234,13 +233,13 @@ public class MoveFocalPoint : MonoBehaviour
         }
     }
 
-    //Allows the blink and random animation speeds to be changed
+    //redos invoke if speed is changed
     public void SpeedValueChanged()
     {
         if(blinkAnim.isOn | randomAnim.isOn){
             CancelInvoke();
-            InvokeRepeating("BlinkAnimation", 0 , 5f / (speedSlider.value*10));
-            InvokeRepeating("RandomAnimation", 0 , 5f / (speedSlider.value*10));
+            InvokeRepeating("BlinkAnimation", 0 , 5f / (speed*10));
+            InvokeRepeating("RandomAnimation", 0 , 5f / (speed*10));
         }
     }
 
@@ -258,7 +257,10 @@ public class MoveFocalPoint : MonoBehaviour
 
     void Update()
     {
-        speedSlider.minValue= 0f;
+        float temp = float.Parse(speedText.text)/10;
+        speed = temp;
+        print(speed);
+        //added randomAnim to it so it doesnt reset the position after it teleports
         if (!animationOn & !randomAnim.isOn)
         {
             UpdatePosition();
@@ -285,12 +287,5 @@ public class MoveFocalPoint : MonoBehaviour
         if(zigzagAnim.isOn){
             ZigzagAnimation();
         }    
-       /* if(randomAnim.isOn)
-        {
-            squiggle.isOn = false;
-            circleAnim.isOn = false;
-            line.isOn = false;
-        }*/
-        
     }
 }
