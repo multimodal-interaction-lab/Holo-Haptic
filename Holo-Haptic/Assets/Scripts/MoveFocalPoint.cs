@@ -45,12 +45,12 @@ public class MoveFocalPoint : MonoBehaviour
     void Start()
     {
         //Debug.Log(transform.position.x.ToString());
-                InvokeRepeating("BlinkAnimation", 0 , 1f);
+        InvokeRepeating("BlinkAnimation", 0 , 1f);
         InvokeRepeating("RandomAnimation", 0 , 1f);
         
         string the_com = "";
-        Vector3 relativePos = transform.localPosition - hapticboard.transform.localPosition;
 
+        Vector3 relativePos = transform.localPosition - hapticboard.transform.localPosition;
         x.text = System.Math.Round(relativePos.x, 2).ToString();
         y.text = System.Math.Round(relativePos.y, 2).ToString();
         z.text = System.Math.Round(relativePos.z, 2).ToString();
@@ -59,8 +59,7 @@ public class MoveFocalPoint : MonoBehaviour
         intensitySlider.minValue = minIntensity;
         intensitySlider.maxValue = maxIntensity;
         speedSlider.minValue = .2f;
-        print("b4");
-        print("after"); 
+
 /*        foreach (string mysps in SerialPort.GetPortNames())
         {
             print(mysps);
@@ -223,7 +222,6 @@ public class MoveFocalPoint : MonoBehaviour
         transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time * 0.5f, col* 0.01f), transform.localPosition.y, lineStart + Mathf.PingPong(speedSlider.value * Time.time * 3, col* 0.01f));
     }
     void BlinkAnimation(){
-                print("it works");
         if(blinkAnim.isOn){
             if(focalPoint.activeSelf)
                 focalPoint.SetActive(false);
@@ -236,6 +234,7 @@ public class MoveFocalPoint : MonoBehaviour
         }
     }
 
+    //Allows the blink and random animation speeds to be changed
     public void SpeedValueChanged()
     {
         if(blinkAnim.isOn | randomAnim.isOn){

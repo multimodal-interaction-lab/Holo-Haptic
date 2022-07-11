@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class ColliderDetector : MonoBehaviour
 {
-    public GameObject AnimationOptions;
-    public GameObject LefthandMenu;
-    public GameObject RighthandMenu;
     public Button button;
 
     /*void OnCollisionEnter(Collision col){
