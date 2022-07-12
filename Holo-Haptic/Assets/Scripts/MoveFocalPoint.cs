@@ -24,6 +24,7 @@ public class MoveFocalPoint : MonoBehaviour
     public Toggle blinkAnim;
     public Toggle randomAnim;
     public TMP_Text speedText;
+    public TMP_InputField RadiusInput;
     public Slider RadiusSlider;
     public GameObject focalPoint;
 
@@ -40,6 +41,7 @@ public class MoveFocalPoint : MonoBehaviour
     private bool resetPos = true;
     private float speed;
     private float intensity;
+    private float radius;
    
 
     SerialPort sp;
@@ -166,7 +168,7 @@ public class MoveFocalPoint : MonoBehaviour
 
     public void sendData()
     {
-        if (sp.IsOpen == false)
+        if (!sp.IsOpen)
         {
             sp.Open();
             print("opened sp");
@@ -193,12 +195,13 @@ public class MoveFocalPoint : MonoBehaviour
 
     void CircleAnimation()
     {
-        RadiusSlider.maxValue = ((hapticboard.GetComponent<TransducerArrayManager>().getCol())/2) * 0.1f;
+        RadiusSlider.maxValue = ((hapticboard.GetComponent<TransducerArrayManager>().getCol())) * 0.1f;
         if(resetPos)
         {
             transform.localPosition = new Vector3(0.0f, 0.15f, 0.0f);
             resetPos = false;
         }
+        RadiusSlider.value = RadiusSlider.maxValue*(radius/10);
         positionOffset.Set(Mathf.Cos( angle ) * RadiusSlider.value*.1f,ElevationOffset, Mathf.Sin( angle ) * RadiusSlider.value *.1f);
         transform.Translate(positionOffset,Space.Self);
         angle += Time.deltaTime * speed * 3;
@@ -216,6 +219,7 @@ public class MoveFocalPoint : MonoBehaviour
     void ZigzagAnimation(){
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
+        int a = 1;
         transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speed * Time.time * 0.5f, col* 0.01f), transform.localPosition.y, lineStart + Mathf.PingPong(speed * Time.time * 3, col* 0.01f));
     }
     void BlinkAnimation(){
@@ -255,7 +259,7 @@ public class MoveFocalPoint : MonoBehaviour
 
     void Update()
     {
-        
+        radius = float.Parse(RadiusInput.text);
         float temp = float.Parse(speedText.text)/10;
         speed = temp;
         temp = float.Parse(intensityInput.text)/10;

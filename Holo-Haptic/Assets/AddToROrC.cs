@@ -59,7 +59,7 @@ public class AddToROrC : MonoBehaviour
     {
         int valueToInt = int.Parse(value);
         if(!(valueToInt == 0)){
-        valueToInt = valueToInt+1;
+        valueToInt = valueToInt-1;
         box.text = valueToInt.ToString();
         }
     }
