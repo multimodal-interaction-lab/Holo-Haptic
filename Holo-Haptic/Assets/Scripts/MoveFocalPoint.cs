@@ -59,8 +59,6 @@ public class MoveFocalPoint : MonoBehaviour
         z.text = System.Math.Round(relativePos.z, 2).ToString();
         //intensityInput.SetTextWithoutNotify(System.Math.Round(intensity, 2).ToString());  **check**
 
-        intensitySlider.minValue = minIntensity;
-        intensitySlider.maxValue = maxIntensity;
 /*        foreach (string mysps in SerialPort.GetPortNames())
         {
             print(mysps);
