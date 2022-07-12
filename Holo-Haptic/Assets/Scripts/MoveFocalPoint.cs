@@ -166,7 +166,7 @@ public class MoveFocalPoint : MonoBehaviour
 
     public void sendData()
     {
-        if (!sp.IsOpen)
+        if (sp.IsOpen == false)
         {
             sp.Open();
             print("opened sp");
@@ -216,7 +216,6 @@ public class MoveFocalPoint : MonoBehaviour
     void ZigzagAnimation(){
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
-        int a = 1;
         transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speed * Time.time * 0.5f, col* 0.01f), transform.localPosition.y, lineStart + Mathf.PingPong(speed * Time.time * 3, col* 0.01f));
     }
     void BlinkAnimation(){
@@ -261,7 +260,6 @@ public class MoveFocalPoint : MonoBehaviour
         speed = temp;
         temp = float.Parse(intensityInput.text)/10;
         intensity = temp;
-        print(speed);
         //added randomAnim to it so it doesnt reset the position after it teleports
         if (!animationOn & !randomAnim.isOn)
         {
