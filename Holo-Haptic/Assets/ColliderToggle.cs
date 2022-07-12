@@ -12,13 +12,15 @@ public class ColliderToggle : MonoBehaviour
         AnimationOptions.SetActive(true);on
     }*/
 
-    private void OnTriggerEnter(Collider other){
-        Debug.Log("hit detected");
-        if(toggle.isOn){
+    private void OnTriggerExit(Collider other){
+        Debug.Log(other.name);
+        if(other.name == "bone3"){
+            if(toggle.isOn){
             toggle.isOn = false;
-        }
-        else{
+            }
+            else{
             toggle.isOn = true;
+            }
         }
         //toggle.isOn = !toggle.isOn;
         /*LefthandMenu.SetActive(false);
