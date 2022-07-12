@@ -7,7 +7,7 @@ using TMPro;
 public class AddToROrC : MonoBehaviour
 {
     public TMP_Text box;
-
+    public TMP_InputField box1;
     private string value;
     // Start is called before the first frame update
     void Start()
@@ -47,5 +47,36 @@ public class AddToROrC : MonoBehaviour
         valueToInt = valueToInt-5;
         box.text = valueToInt.ToString();
     }
-
+    public void plus1other()
+    {
+        int valueToInt = int.Parse(value);
+        if(!(valueToInt == 10)){
+        valueToInt = valueToInt+1;
+        box.text = valueToInt.ToString();
+        }
+    }
+    public void minus1other()
+    {
+        int valueToInt = int.Parse(value);
+        if(!(valueToInt == 0)){
+        valueToInt = valueToInt+1;
+        box.text = valueToInt.ToString();
+        }
+    }
+    public void plus1inputfield()
+    {
+        int valueToInt = int.Parse(box1.text);
+        if(!(valueToInt == 10)){
+            valueToInt = valueToInt+1;
+            box1.text = valueToInt.ToString();
+        }    
+    }
+    public void minus1inputfield()
+    {
+        int valueToInt = int.Parse(box1.text);
+        if(!(valueToInt == 0)){
+            valueToInt = valueToInt-1;
+            box1.text = valueToInt.ToString();
+        }    
+    }
 }

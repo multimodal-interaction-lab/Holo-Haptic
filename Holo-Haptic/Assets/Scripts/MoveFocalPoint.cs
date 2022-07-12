@@ -39,6 +39,7 @@ public class MoveFocalPoint : MonoBehaviour
     public bool animationOn = false;
     private bool resetPos = true;
     private float speed;
+    private float intensity;
    
 
     SerialPort sp;
@@ -56,7 +57,7 @@ public class MoveFocalPoint : MonoBehaviour
         x.text = System.Math.Round(relativePos.x, 2).ToString();
         y.text = System.Math.Round(relativePos.y, 2).ToString();
         z.text = System.Math.Round(relativePos.z, 2).ToString();
-        intensityInput.SetTextWithoutNotify(System.Math.Round(intensitySlider.value, 2).ToString());
+        //intensityInput.SetTextWithoutNotify(System.Math.Round(intensity, 2).ToString());  **check**
 
         intensitySlider.minValue = minIntensity;
         intensitySlider.maxValue = maxIntensity;
@@ -136,20 +137,20 @@ public class MoveFocalPoint : MonoBehaviour
         sendData();   
     }
 
-    public void intensitySliderUpdate()
+    /*public void intensitySliderUpdate()
     {
-        intensityInput.SetTextWithoutNotify(System.Math.Round(intensitySlider.value, 2).ToString());
+        intensityInput.SetTextWithoutNotify(System.Math.Round(intensity, 2).ToString()); **check**
         sendData();
-    }
+    }*/
 
-    public void intensityTextUpdate()
+    /*public void intensityTextUpdate()
     {
         float val = (float)System.Math.Round(float.Parse(intensityInput.text), 2);
         float clampedVal = Mathf.Clamp(val, minIntensity, maxIntensity);
         intensityInput.SetTextWithoutNotify(clampedVal.ToString());
-        intensitySlider.SetValueWithoutNotify(clampedVal);
+        //intensitySlider.SetValueWithoutNotify(clampedVal);
         sendData();
-    }
+    }*/
 
 
     public void OpenPort(string portname, int baudrate)
@@ -175,7 +176,7 @@ public class MoveFocalPoint : MonoBehaviour
         if (sp.IsOpen)
         {
             print("Writing ");
-            sp.Write("X=" + x.text + "Y=" + z.text + "Z=" + y.text + " I=" + System.Math.Round(intensitySlider.value, 2).ToString());
+            sp.Write("X=" + x.text + "Y=" + z.text + "Z=" + y.text + " I=" + System.Math.Round(intensity, 2).ToString());
         }
     }
 
@@ -257,8 +258,11 @@ public class MoveFocalPoint : MonoBehaviour
 
     void Update()
     {
+        
         float temp = float.Parse(speedText.text)/10;
         speed = temp;
+        temp = float.Parse(intensityInput.text)/10;
+        intensity = temp;
         print(speed);
         //added randomAnim to it so it doesnt reset the position after it teleports
         if (!animationOn & !randomAnim.isOn)
