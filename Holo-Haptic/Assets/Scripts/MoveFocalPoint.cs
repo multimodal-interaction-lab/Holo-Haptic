@@ -252,7 +252,7 @@ public class MoveFocalPoint : MonoBehaviour
             int row = hapticboard.GetComponent<TransducerArrayManager>().getRow();
             float xvalue = (-1 * (col /2) * 0.01f);
             float zvalue  = (-1 * (row/2)*0.01f);
-            var position = new Vector3(Random.Range(xvalue,Mathf.Abs(xvalue)),.15f,Random.Range(zvalue,Mathf.Abs(zvalue)));
+            var position = new Vector3(Random.Range(xvalue,Mathf.Abs(xvalue)),0,Random.Range(zvalue,Mathf.Abs(zvalue)));
             transform.localPosition = position;
         }    
     }
