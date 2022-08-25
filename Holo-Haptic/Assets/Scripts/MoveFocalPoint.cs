@@ -186,6 +186,7 @@ public class MoveFocalPoint : MonoBehaviour
         if (sp.IsOpen)
         {
             print("Writing ");
+            //sp.Write("test");
             
             sp.Write(xPacket);
             sp.Write(yPacket);
@@ -193,6 +194,8 @@ public class MoveFocalPoint : MonoBehaviour
             sp.Write(iPacket);
             sp.Write(jPacket);
             sp.Write(aPacket);
+            
+            
         }
     }
 

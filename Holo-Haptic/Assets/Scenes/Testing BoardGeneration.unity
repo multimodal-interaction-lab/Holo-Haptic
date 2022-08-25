@@ -1858,8 +1858,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 110175306}
   m_HandleRect: {fileID: 110175305}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.9999999
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5524,7 +5524,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2023768292}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.2528
+  m_Size: 0.18079999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10310,6 +10310,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1930062967}
   m_CullTransparentMesh: 1
+--- !u!1 &1954139392 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4731559816528079266, guid: 7ddf6d2287e23b243aef57b8ae1a19f6, type: 3}
+  m_PrefabInstance: {fileID: 4731559816457629769}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1966178562
 GameObject:
   m_ObjectHideFlags: 0
@@ -11437,6 +11442,7 @@ MonoBehaviour:
   speedSlider: {fileID: 2099349148}
   RadiusSlider: {fileID: 252797682}
   focalPoint: {fileID: 2122938352}
+  transducerPrefab: {fileID: 1954139392}
   baudrate: 115200
   readFromFile: 0
   animationOn: 0
