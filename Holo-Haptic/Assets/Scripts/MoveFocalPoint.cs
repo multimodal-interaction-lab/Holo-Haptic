@@ -26,6 +26,7 @@ public class MoveFocalPoint : MonoBehaviour
     public Slider speedSlider;
     public Slider RadiusSlider;
     public GameObject focalPoint;
+    public GameObject transducerPrefab;
 
     private float x_pos, y_pos, z_pos;
     private float ElevationOffset = 0;
@@ -150,7 +151,7 @@ public class MoveFocalPoint : MonoBehaviour
         intensityInput.SetTextWithoutNotify(clampedVal.ToString());
         intensitySlider.SetValueWithoutNotify(clampedVal);
         sendData();
-    }
+    } 
 
 
     public void OpenPort(string portname, int baudrate)
@@ -168,6 +169,15 @@ public class MoveFocalPoint : MonoBehaviour
 
     public void sendData()
     {
+        string xPacket = "#x" + ((short)(float.Parse(x.text) * 1000 / .0034)).ToString("X5") + "$";
+        string yPacket = "#y" + ((short)(float.Parse(z.text) * 1000 / .0034)).ToString("X5") + "$";
+        string zPacket = "#z" + ((short)(float.Parse(y.text) * 1000 / .0034)).ToString("X5") + "$";
+        string iPacket = "#i" + ((short)0).ToString("X5") + "$";
+        string jPacket = "#j" + ((short)0).ToString("X5") + "$";
+        string aPacket = "#a" + ((short)(System.Math.Round(intensitySlider.value, 2) * 1023)).ToString("X5") + "$";
+
+        Debug.LogFormat("xPack : " + xPacket + "\nyPack : " + yPacket + "\nzPack : " + zPacket + "\niPack : " + iPacket + "\njPack : " + jPacket + "\naPack : " + aPacket);
+
         if (!sp.IsOpen)
         {
             sp.Open();
@@ -176,9 +186,17 @@ public class MoveFocalPoint : MonoBehaviour
         if (sp.IsOpen)
         {
             print("Writing ");
-            sp.Write("X=" + x.text + "Y=" + z.text + "Z=" + y.text + " I=" + System.Math.Round(intensitySlider.value, 2).ToString());
+            
+            sp.Write(xPacket);
+            sp.Write(yPacket);
+            sp.Write(zPacket);
+            sp.Write(iPacket);
+            sp.Write(jPacket);
+            sp.Write(aPacket);
         }
     }
+
+
 
     void UpdatePosition()
     {
