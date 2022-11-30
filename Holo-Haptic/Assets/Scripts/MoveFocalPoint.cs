@@ -189,9 +189,9 @@ public class MoveFocalPoint : MonoBehaviour
     public IEnumerator asyncSendData()
     {
         sendingData = true;
-        string xPacket = "#x" + ((short)(float.Parse(x.text) * 1000 / .0034)).ToString("X5") + "$";
-        string yPacket = "#y" + ((short)(float.Parse(z.text) * 1000 / .0034)).ToString("X5") + "$";
-        string zPacket = "#z" + ((short)(float.Parse(y.text) * 1000 / .0034)).ToString("X5") + "$";
+        string xPacket = "#x" + ((short)(transform.localPosition.x * 1000 / .0034)).ToString("X5") + "$";
+        string yPacket = "#y" + ((short)(transform.localPosition.y * 1000 / .0034)).ToString("X5") + "$";
+        string zPacket = "#z" + ((short)(transform.localPosition.z * 1000 / .0034)).ToString("X5") + "$";
         string iPacket = "#i" + ((short)0).ToString("X5") + "$";
         string jPacket = "#j" + ((short)0).ToString("X5") + "$";
         string aPacket = "#a" + ((short)(meshRend.enabled ? System.Math.Round(intensitySlider.value, 2) * 1023 : 0)).ToString("X5") + "$";
