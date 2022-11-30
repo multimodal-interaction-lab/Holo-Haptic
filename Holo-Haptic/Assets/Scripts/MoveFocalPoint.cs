@@ -39,6 +39,10 @@ public class MoveFocalPoint : MonoBehaviour
     private bool noPortsFound;
     public bool animationOn = false;
     private bool resetPos = true;
+    private bool sendingData = false;
+    public float updateRate;
+    private float updateTimer = 0f;
+    private MeshRenderer meshRend;
    
 
     SerialPort sp;
@@ -46,15 +50,17 @@ public class MoveFocalPoint : MonoBehaviour
     void Start()
     {
         //Debug.Log(transform.position.x.ToString());
-
+        meshRend = GetComponent<MeshRenderer>();
         string the_com = "";
 
         Vector3 relativePos = transform.localPosition - hapticboard.transform.localPosition;
 
-        x.text = System.Math.Round(relativePos.x, 2).ToString();
-        y.text = System.Math.Round(relativePos.y, 2).ToString();
-        z.text = System.Math.Round(relativePos.z, 2).ToString();
+        x.SetTextWithoutNotify(System.Math.Round(relativePos.x, 2).ToString());
+        y.SetTextWithoutNotify(System.Math.Round(relativePos.y, 2).ToString());
+        z.SetTextWithoutNotify(System.Math.Round(relativePos.z, 2).ToString());
         intensityInput.SetTextWithoutNotify(System.Math.Round(intensitySlider.value, 2).ToString());
+        focalTextUpdated();
+
 
         intensitySlider.minValue = minIntensity;
         intensitySlider.maxValue = maxIntensity;
@@ -166,63 +172,83 @@ public class MoveFocalPoint : MonoBehaviour
         }
     }
 
+    public void focalTextUpdated()
+    {
+        UpdateTextPosition();
+        sendData();
+    }
 
     public void sendData()
     {
+        if (!sendingData)
+        {
+           StartCoroutine(asyncSendData());
+        }
+    }
+
+    public IEnumerator asyncSendData()
+    {
+        sendingData = true;
         string xPacket = "#x" + ((short)(float.Parse(x.text) * 1000 / .0034)).ToString("X5") + "$";
         string yPacket = "#y" + ((short)(float.Parse(z.text) * 1000 / .0034)).ToString("X5") + "$";
         string zPacket = "#z" + ((short)(float.Parse(y.text) * 1000 / .0034)).ToString("X5") + "$";
         string iPacket = "#i" + ((short)0).ToString("X5") + "$";
         string jPacket = "#j" + ((short)0).ToString("X5") + "$";
-        string aPacket = "#a" + ((short)(System.Math.Round(intensitySlider.value, 2) * 1023)).ToString("X5") + "$";
+        string aPacket = "#a" + ((short)(meshRend.enabled ? System.Math.Round(intensitySlider.value, 2) * 1023 : 0)).ToString("X5") + "$";
 
         Debug.LogFormat("xPack : " + xPacket + "\nyPack : " + yPacket + "\nzPack : " + zPacket + "\niPack : " + iPacket + "\njPack : " + jPacket + "\naPack : " + aPacket);
+        try
+        {
+            if (!sp.IsOpen)
+            {
+                sp.Open();
+                print("opened sp");
+            }
+            if (sp.IsOpen)
+            {
+                print("Writing ");
+                //sp.Write("test");
 
-        if (!sp.IsOpen)
+                sp.Write(xPacket);
+                sp.Write(yPacket);
+                sp.Write(zPacket);
+                sp.Write(iPacket);
+                sp.Write(jPacket);
+                sp.Write(aPacket);
+
+
+            }
+        } catch(System.Exception e)
         {
-            sp.Open();
-            print("opened sp");
+            print("Error attempting to send data to port: " + e.Message);
         }
-        if (sp.IsOpen)
-        {
-            print("Writing ");
-            //sp.Write("test");
-            
-            sp.Write(xPacket);
-            sp.Write(yPacket);
-            sp.Write(zPacket);
-            sp.Write(iPacket);
-            sp.Write(jPacket);
-            sp.Write(aPacket);
-            
-            
-        }
+       
+        sendingData = false;
+        yield return null;
     }
 
-
-
-    void UpdatePosition()
+    void UpdateTextPosition()
     {
+        Debug.Log("started");
 
         bool xParse = float.TryParse(x.text, out x_pos);
         bool yParse = float.TryParse(y.text, out y_pos);
         bool zParse = float.TryParse(z.text, out z_pos);
 
-        if (xParse && yParse && zParse)
-        {
-            transform.localPosition = new Vector3(x_pos + hapticboard.transform.localPosition.x, y_pos + hapticboard.transform.localPosition.y, z_pos + hapticboard.transform.localPosition.z);
-        }
+        Debug.Log("x: " + x_pos + ",y: " + y_pos + ",z: " + z_pos);
 
+    }
+
+    void StaticPosition()
+    {
+        transform.localPosition = new Vector3(x_pos + hapticboard.transform.localPosition.x, y_pos + hapticboard.transform.localPosition.y, z_pos + hapticboard.transform.localPosition.z);
     }
 
     void CircleAnimation()
     {
         RadiusSlider.maxValue = ((hapticboard.GetComponent<TransducerArrayManager>().getCol())/2) * 0.1f;
-        if(resetPos)
-        {
-            transform.localPosition = new Vector3(0.0f, 0.15f, 0.0f);
-            resetPos = false;
-        }
+
+        transform.localPosition = new Vector3(x_pos, y_pos, z_pos);
         positionOffset.Set(Mathf.Cos( angle ) * RadiusSlider.value*.1f,ElevationOffset, Mathf.Sin( angle ) * RadiusSlider.value *.1f);
         transform.Translate(positionOffset,Space.Self);
         angle += Time.deltaTime * speedSlider.value * 3;
@@ -234,25 +260,22 @@ public class MoveFocalPoint : MonoBehaviour
     {
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
-        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), transform.localPosition.y, transform.localPosition.z);
+        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), y_pos, z_pos);
     }
 
     void SquiggleAnimation(){
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
         int a = 1;
-        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time * 0.5f, col* 0.01f), transform.localPosition.y, lineStart + Mathf.PingPong(speedSlider.value * Time.time * 3, col* 0.01f));
+        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time * 0.5f, col* 0.01f), y_pos, lineStart + Mathf.PingPong(speedSlider.value * Time.time * 3, col* 0.01f));
     }
     void BlinkAnimation(){
         if(blinkAnim.isOn){
-            if(focalPoint.activeSelf)
-                focalPoint.SetActive(false);
-            else
-                focalPoint.SetActive(true);
+            meshRend.enabled = !meshRend.enabled;
         }
         else
         {
-            focalPoint.SetActive(true);
+            meshRend.enabled = true;
         }
     }
     
@@ -279,10 +302,18 @@ public class MoveFocalPoint : MonoBehaviour
 
     void Update()
     {
+
+        updateTimer += Time.deltaTime;
+        if(updateTimer > updateRate)
+        {
+            updateTimer = 0f;
+            sendData();
+        }
+
         speedSlider.minValue= 0f;
         if (!animationOn & !randomAnim.isOn)
         {
-            UpdatePosition();
+            StaticPosition();
         }
         
         if(Input.GetKey(KeyCode.A))

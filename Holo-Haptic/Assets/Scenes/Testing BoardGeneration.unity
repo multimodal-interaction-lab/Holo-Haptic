@@ -2121,19 +2121,7 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2122938358}
-        m_TargetAssemblyTypeName: MoveFocalPoint, Assembly-CSharp
-        m_MethodName: sendData
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -2151,7 +2139,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2122938358}
+        m_TargetAssemblyTypeName: MoveFocalPoint, Assembly-CSharp
+        m_MethodName: focalTextUpdated
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2664,7 +2664,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 127.24999, y: -49.083332}
+  m_AnchoredPosition: {x: 127.25, y: -49.083344}
   m_SizeDelta: {x: 214.49998, y: 98.166664}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &614856255
@@ -4893,19 +4893,7 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2122938358}
-        m_TargetAssemblyTypeName: MoveFocalPoint, Assembly-CSharp
-        m_MethodName: sendData
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -4923,7 +4911,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2122938358}
+        m_TargetAssemblyTypeName: MoveFocalPoint, Assembly-CSharp
+        m_MethodName: focalTextUpdated
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5600,9 +5600,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Blink
-
-'
+  m_text: On/Off
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 13a891a9bc491ae45b72e589feb1dd28, type: 2}
   m_sharedMaterial: {fileID: -3268728148183133606, guid: 13a891a9bc491ae45b72e589feb1dd28, type: 2}
@@ -6973,7 +6971,7 @@ GameObject:
   - component: {fileID: 1402236732}
   - component: {fileID: 1402236733}
   m_Layer: 5
-  m_Name: Blinking
+  m_Name: OnOff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8539,19 +8537,7 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2122938358}
-        m_TargetAssemblyTypeName: MoveFocalPoint, Assembly-CSharp
-        m_MethodName: sendData
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -8569,7 +8555,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2122938358}
+        m_TargetAssemblyTypeName: MoveFocalPoint, Assembly-CSharp
+        m_MethodName: focalTextUpdated
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -11457,7 +11455,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 4.7, y: -70.5}
+  m_AnchoredPosition: {x: 4.699997, y: -70.5}
   m_SizeDelta: {x: -20, y: 31}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2048354579
@@ -12247,6 +12245,7 @@ MonoBehaviour:
   baudrate: 115200
   readFromFile: 0
   animationOn: 0
+  updateRate: 0.1
 --- !u!1 &2134235798
 GameObject:
   m_ObjectHideFlags: 0
