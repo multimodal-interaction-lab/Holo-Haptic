@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.IO;
 using System.IO.Ports;
 using TMPro;
+using System;
 
 public class MoveFocalPoint : MonoBehaviour
 {
@@ -27,6 +28,11 @@ public class MoveFocalPoint : MonoBehaviour
     public Slider RadiusSlider;
     public GameObject focalPoint;
     public GameObject transducerPrefab;
+
+    public Slider animFrameSlider;
+    float timeToNextFrame;
+    public bool animPlaying;
+    int m_startTime;
 
     private float x_pos, y_pos, z_pos;
     private float ElevationOffset = 0;
@@ -65,8 +71,15 @@ public class MoveFocalPoint : MonoBehaviour
         intensitySlider.minValue = minIntensity;
         intensitySlider.maxValue = maxIntensity;
         speedSlider.minValue = .2f;
-        InvokeRepeating("BlinkAnimation", 0 , 1f);
-        InvokeRepeating("RandomAnimation", 0 , 1f);
+        speedSlider.maxValue = 2f;
+        m_startTime = (int)DateTime.Now.Ticks;
+        
+        timeToNextFrame = 0f;
+        animFrameSlider.value = 0;
+        animPlaying = true;
+
+
+
 
 /*        foreach (string mysps in SerialPort.GetPortNames())
         {
@@ -248,10 +261,12 @@ public class MoveFocalPoint : MonoBehaviour
     {
         RadiusSlider.maxValue = ((hapticboard.GetComponent<TransducerArrayManager>().getCol())/2) * 0.1f;
 
+        angle = animFrameSlider.value * ((Mathf.PI * 2) / animFrameSlider.maxValue);
+
         transform.localPosition = new Vector3(x_pos, y_pos, z_pos);
         positionOffset.Set(Mathf.Cos( angle ) * RadiusSlider.value*.1f,ElevationOffset, Mathf.Sin( angle ) * RadiusSlider.value *.1f);
         transform.Translate(positionOffset,Space.Self);
-        angle += Time.deltaTime * speedSlider.value * 3;
+        
     }
 
 
@@ -260,44 +275,38 @@ public class MoveFocalPoint : MonoBehaviour
     {
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
-        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time, col* 0.01f), y_pos, z_pos);
+        var length = col * 0.01f;
+        transform.localPosition = new Vector3(lineStart + (animFrameSlider.value * (2f / animFrameSlider.maxValue) * length - Mathf.Max(0, animFrameSlider.value - animFrameSlider.maxValue / 2f) * (2f / animFrameSlider.maxValue) * length), y_pos, z_pos);
     }
 
     void SquiggleAnimation(){
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
         int a = 1;
-        transform.localPosition = new Vector3(lineStart + Mathf.PingPong(speedSlider.value * Time.time * 0.5f, col* 0.01f), y_pos, lineStart + Mathf.PingPong(speedSlider.value * Time.time * 3, col* 0.01f));
+        transform.localPosition = new Vector3(lineStart + Mathf.PingPong((animFrameSlider.value/animFrameSlider.maxValue) * 0.5f, col* 0.01f), y_pos, lineStart + Mathf.PingPong((animFrameSlider.value / animFrameSlider.maxValue) * 3, col* 0.01f));
     }
     void BlinkAnimation(){
-        if(blinkAnim.isOn){
-            meshRend.enabled = !meshRend.enabled;
-        }
-        else
-        {
-            meshRend.enabled = true;
-        }
+        int chunk = (int)( 4 * animFrameSlider.value / animFrameSlider.maxValue);
+        meshRend.enabled = chunk % 2 == 1;
+
+        
     }
     
     public void SpeedValueChanged()
     {
-        if(blinkAnim.isOn | randomAnim.isOn){
-            CancelInvoke();
-            InvokeRepeating("BlinkAnimation", 0 , 5f / (speedSlider.value*10));
-            InvokeRepeating("RandomAnimation", 0 , 5f / (speedSlider.value*10));
-        }
+
     }
 
     void RandomAnimation()
     {
-        if(randomAnim.isOn){
-            int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
-            int row = hapticboard.GetComponent<TransducerArrayManager>().getRow();
-            float xvalue = (-1 * (col /2) * 0.01f);
-            float zvalue  = (-1 * (row/2)*0.01f);
-            var position = new Vector3(Random.Range(xvalue,Mathf.Abs(xvalue)),.15f,Random.Range(zvalue,Mathf.Abs(zvalue)));
-            transform.localPosition = position;
-        }    
+        int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
+        int row = hapticboard.GetComponent<TransducerArrayManager>().getRow();
+        float xvalue = (-1 * (col / 2) * 0.01f);
+        float zvalue = (-1 * (row / 2) * 0.01f);
+
+        UnityEngine.Random.InitState(m_startTime + (int)(10 * animFrameSlider.value / animFrameSlider.maxValue));
+        var position = new Vector3(UnityEngine.Random.Range(xvalue, Mathf.Abs(xvalue)), .15f, UnityEngine.Random.Range(zvalue, Mathf.Abs(zvalue)));
+        transform.localPosition = position;
     }
 
     void Update()
@@ -309,6 +318,17 @@ public class MoveFocalPoint : MonoBehaviour
             updateTimer = 0f;
             sendData();
         }
+        if (animPlaying)
+        {
+            timeToNextFrame += Time.deltaTime * speedSlider.value;
+            if (timeToNextFrame > 1f / animFrameSlider.maxValue)
+            {
+                animFrameSlider.value = (animFrameSlider.value + 1) % animFrameSlider.maxValue;
+                timeToNextFrame -= 1f / animFrameSlider.maxValue;
+               
+            }
+        }
+       
 
         speedSlider.minValue= 0f;
         if (!animationOn & !randomAnim.isOn)
@@ -336,6 +356,18 @@ public class MoveFocalPoint : MonoBehaviour
         }
         if(squiggle.isOn){
             SquiggleAnimation();
-        }    
+        }
+        if (blinkAnim.isOn)
+        {
+            BlinkAnimation();
+        }
+        else
+        {
+            meshRend.enabled = true;
+        }
+        if (randomAnim.isOn)
+        {
+            RandomAnimation();
+        }
     }
 }
