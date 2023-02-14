@@ -49,6 +49,8 @@ public class MoveFocalPoint : MonoBehaviour
     public float updateRate;
     private float updateTimer = 0f;
     private MeshRenderer meshRend;
+
+    float frequency;
    
 
     SerialPort sp;
@@ -78,6 +80,7 @@ public class MoveFocalPoint : MonoBehaviour
         animFrameSlider.value = 0;
         animPlaying = true;
 
+        frequency = 1;
 
 
 
@@ -209,7 +212,7 @@ public class MoveFocalPoint : MonoBehaviour
         string jPacket = "#j" + ((short)0).ToString("X5") + "$";
         string aPacket = "#a" + ((short)(meshRend.enabled ? System.Math.Round(intensitySlider.value, 2) * 1023 : 0)).ToString("X5") + "$";
 
-        Debug.LogFormat("xPack : " + xPacket + "\nyPack : " + yPacket + "\nzPack : " + zPacket + "\niPack : " + iPacket + "\njPack : " + jPacket + "\naPack : " + aPacket);
+        //Debug.LogFormat("xPack : " + xPacket + "\nyPack : " + yPacket + "\nzPack : " + zPacket + "\niPack : " + iPacket + "\njPack : " + jPacket + "\naPack : " + aPacket);
         try
         {
             if (!sp.IsOpen)
@@ -297,6 +300,16 @@ public class MoveFocalPoint : MonoBehaviour
 
     }
 
+    public void UpdateFreq(string freq)
+    {
+        float f;
+        if(float.TryParse(freq, out f))
+        {
+            frequency = f;
+        }
+        
+    }
+
     void RandomAnimation()
     {
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
@@ -320,6 +333,7 @@ public class MoveFocalPoint : MonoBehaviour
         }
         if (animPlaying)
         {
+            /*
             timeToNextFrame += Time.deltaTime * speedSlider.value;
             if (timeToNextFrame > 1f / animFrameSlider.maxValue)
             {
@@ -327,6 +341,15 @@ public class MoveFocalPoint : MonoBehaviour
                 timeToNextFrame -= 1f / animFrameSlider.maxValue;
                
             }
+            */
+
+            timeToNextFrame += Time.deltaTime * frequency;
+
+            animFrameSlider.value = (int) ((timeToNextFrame % 1f) * (animFrameSlider.maxValue));
+            timeToNextFrame %= 1f;
+        } else
+        {
+            timeToNextFrame = animFrameSlider.value / animFrameSlider.maxValue;
         }
        
 
