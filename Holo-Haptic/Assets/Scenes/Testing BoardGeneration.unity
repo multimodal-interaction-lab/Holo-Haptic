@@ -2097,7 +2097,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -2195,7 +2195,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 110175306}
   m_HandleRect: {fileID: 110175305}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -7149,7 +7149,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2023768292}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.23479998
+  m_Size: 0.2048
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13778,9 +13778,9 @@ MonoBehaviour:
   animFrameSlider: {fileID: 1532764135}
   animPlaying: 0
   baudrate: 115200
-  readFromFile: 0
+  readFromFile: 1
   animationOn: 0
-  updateRate: 0.1
+  updateRate: 0.5
 --- !u!1 &2134235798
 GameObject:
   m_ObjectHideFlags: 0

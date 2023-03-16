@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Ports;
 using TMPro;
 using System;
+using System.Threading;
 
 public class MoveFocalPoint : MonoBehaviour
 {
@@ -54,6 +55,13 @@ public class MoveFocalPoint : MonoBehaviour
    
 
     SerialPort sp;
+
+    string lastXPack = "";
+    string lastYPack = "";
+    string lastZPack = "";
+    string lastIPack = "";
+    string lastJPack = "";
+    string lastAPack = "";
 
     void Start()
     {
@@ -107,7 +115,7 @@ public class MoveFocalPoint : MonoBehaviour
 
         if (readFromFile)
         {
-            the_com = File.ReadAllText("port.ini");
+            the_com = File.ReadAllText(Application.dataPath + "/port.ini");
 
             if (!the_com.StartsWith("COM"))
             {
@@ -151,19 +159,19 @@ public class MoveFocalPoint : MonoBehaviour
     public void incrementVal(TMP_InputField g)
     {
         g.text = System.Math.Round(float.Parse(g.text) + 0.01f, 2).ToString();
-        sendData();
+        //sendData();
     }
 
     public void decrementVal(TMP_InputField g)
     {
         g.text = System.Math.Round(float.Parse(g.text) - 0.01f, 2).ToString();
-        sendData();   
+        //sendData();   
     }
 
     public void intensitySliderUpdate()
     {
         intensityInput.SetTextWithoutNotify(System.Math.Round(intensitySlider.value, 2).ToString());
-        sendData();
+        //sendData();
     }
 
     public void intensityTextUpdate()
@@ -172,7 +180,7 @@ public class MoveFocalPoint : MonoBehaviour
         float clampedVal = Mathf.Clamp(val, minIntensity, maxIntensity);
         intensityInput.SetTextWithoutNotify(clampedVal.ToString());
         intensitySlider.SetValueWithoutNotify(clampedVal);
-        sendData();
+        //sendData();
     } 
 
 
@@ -180,18 +188,18 @@ public class MoveFocalPoint : MonoBehaviour
     {
         sp = new SerialPort(portname, baudrate);
         sp.Open();
-        sp.ReadTimeout = 100;
+        sp.ReadTimeout = 500;
         sp.Handshake = Handshake.None;
         if (sp.IsOpen)
         {
-            print("Open");
+            print("Opened " + portname);
         }
     }
 
     public void focalTextUpdated()
     {
         UpdateTextPosition();
-        sendData();
+        //sendData();
     }
 
     public void sendData()
@@ -205,9 +213,9 @@ public class MoveFocalPoint : MonoBehaviour
     public IEnumerator asyncSendData()
     {
         sendingData = true;
-        string xPacket = "#x" + ((short)(transform.localPosition.x * 1000 / .0034)).ToString("X5") + "$";
-        string yPacket = "#y" + ((short)(transform.localPosition.y * 1000 / .0034)).ToString("X5") + "$";
-        string zPacket = "#z" + ((short)(transform.localPosition.z * 1000 / .0034)).ToString("X5") + "$";
+        string xPacket = "#x" + ((short)(float.Parse(x.text) * 1000 / .0034)).ToString("X5") + "$";
+        string yPacket = "#y" + ((short)(float.Parse(z.text) * 1000 / .0034)).ToString("X5") + "$";
+        string zPacket = "#z" + ((short)(float.Parse(y.text) * 1000 / .0034)).ToString("X5") + "$";
         string iPacket = "#i" + ((short)0).ToString("X5") + "$";
         string jPacket = "#j" + ((short)0).ToString("X5") + "$";
         string aPacket = "#a" + ((short)(meshRend.enabled ? System.Math.Round(intensitySlider.value, 2) * 1023 : 0)).ToString("X5") + "$";
@@ -220,25 +228,60 @@ public class MoveFocalPoint : MonoBehaviour
                 sp.Open();
                 print("opened sp");
             }
-            if (sp.IsOpen)
-            {
-                print("Writing ");
-                //sp.Write("test");
-
-                sp.Write(xPacket);
-                sp.Write(yPacket);
-                sp.Write(zPacket);
-                sp.Write(iPacket);
-                sp.Write(jPacket);
-                sp.Write(aPacket);
-
-
-            }
+           
         } catch(System.Exception e)
         {
             print("Error attempting to send data to port: " + e.Message);
+            sendingData = false;
         }
-       
+        if (!sendingData)
+        {
+            yield return null;
+        } else
+        if (sp.IsOpen)
+        {
+            print("Writing ");
+            //sp.Write("test");
+            if (!xPacket.Equals(lastXPack))
+            {
+                sp.Write(xPacket);
+                yield return new WaitForSeconds(.1f);
+                lastXPack = xPacket;
+            }
+
+            if (!yPacket.Equals(lastYPack))
+            {
+                sp.Write(yPacket);
+                yield return new WaitForSeconds(.1f);
+                lastYPack = yPacket;
+            }
+            if (!zPacket.Equals(lastZPack))
+            {
+                sp.Write(zPacket);
+                yield return new WaitForSeconds(.1f);
+                lastZPack = zPacket;
+            }
+            if (!iPacket.Equals(lastIPack))
+            {
+                sp.Write(iPacket);
+                yield return new WaitForSeconds(.1f);
+                lastIPack = iPacket;
+            }
+            if (!jPacket.Equals(lastJPack))
+            {
+                sp.Write(jPacket);
+                yield return new WaitForSeconds(.1f);
+                lastJPack = jPacket;
+            }
+            if (!aPacket.Equals(lastAPack))
+            {
+                sp.Write(aPacket);
+                yield return new WaitForSeconds(.1f);
+                lastAPack = aPacket;
+            }
+            //  sp.Close();
+
+        }
         sendingData = false;
         yield return null;
     }
