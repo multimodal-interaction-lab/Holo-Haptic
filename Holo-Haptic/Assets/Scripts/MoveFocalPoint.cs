@@ -20,6 +20,7 @@ public class MoveFocalPoint : MonoBehaviour
     public TMP_InputField intensityInput;
     public GameObject pivotPoint;
     private Vector3 axis = Vector3.right;
+    public Toggle ampltestAnim;
     public Toggle line;
     public Toggle circleAnim;
     public Toggle squiggle;
@@ -41,7 +42,7 @@ public class MoveFocalPoint : MonoBehaviour
     private Vector3 positionOffset;
     float minIntensity = 0f;
     float maxIntensity = 1f;
-    public int baudrate = 115200;
+    public int baudrate = 115200;  //
     public bool readFromFile;
     private bool noPortsFound;
     public bool animationOn = false;
@@ -50,10 +51,15 @@ public class MoveFocalPoint : MonoBehaviour
     public float updateRate;
     private float updateTimer = 0f;
     private MeshRenderer meshRend;
+    private int line_direction = 1;
+    
+    public float lineStartVal;
+    public float lineEndVal;
+
 
     float frequency;
-   
 
+    System.Random rnd = new System.Random();
     SerialPort sp;
 
     string lastXPack = "";
@@ -213,14 +219,14 @@ public class MoveFocalPoint : MonoBehaviour
     public IEnumerator asyncSendData()
     {
         sendingData = true;
-        string xPacket = "#x" + ((short)(float.Parse(x.text) * 1000 / .0034)).ToString("X5") + "$";
-        string yPacket = "#y" + ((short)(float.Parse(z.text) * 1000 / .0034)).ToString("X5") + "$";
-        string zPacket = "#z" + ((short)(float.Parse(y.text) * 1000 / .0034)).ToString("X5") + "$";
-        string iPacket = "#i" + ((short)0).ToString("X5") + "$";
-        string jPacket = "#j" + ((short)0).ToString("X5") + "$";
-        string aPacket = "#a" + ((short)(meshRend.enabled ? System.Math.Round(intensitySlider.value, 2) * 1023 : 0)).ToString("X5") + "$";
+        string xPacket = "#x" + ((long)(float.Parse(x.text) * 1000 * 2048 / 8.5f)).ToString("X5") + "$";  //34 before
+        string yPacket = "#y" + ((long)(float.Parse(z.text) * 1000 * 2048 / 8.5f)).ToString("X5") + "$";
+        string zPacket = "#z" + ((long)(float.Parse(y.text) * 1000 * 2048 / 8.5f)).ToString("X5") + "$";
+        string iPacket = "#i" + ((long)0).ToString("X5") + "$";
+        string jPacket = "#j" + ((long)0).ToString("X5") + "$";
+        string aPacket = "#a" + ((long)(meshRend.enabled ? System.Math.Round(intensitySlider.value, 2) * 1023 : 0)).ToString("X5") + "$";
 
-        //Debug.LogFormat("xPack : " + xPacket + "\nyPack : " + yPacket + "\nzPack : " + zPacket + "\niPack : " + iPacket + "\njPack : " + jPacket + "\naPack : " + aPacket);
+        Debug.LogFormat("xPack : " + xPacket + "\nyPack : " + yPacket + "\nzPack : " + zPacket + "\niPack : " + iPacket + "\njPack : " + jPacket + "\naPack : " + aPacket);
         try
         {
             if (!sp.IsOpen)
@@ -245,41 +251,41 @@ public class MoveFocalPoint : MonoBehaviour
             if (!xPacket.Equals(lastXPack))
             {
                 sp.Write(xPacket);
-                yield return new WaitForSeconds(.1f);
+               // yield return new WaitForSeconds(.5f);
                 lastXPack = xPacket;
             }
 
             if (!yPacket.Equals(lastYPack))
             {
                 sp.Write(yPacket);
-                yield return new WaitForSeconds(.1f);
+              //  yield return new WaitForSeconds(.5f);
                 lastYPack = yPacket;
             }
             if (!zPacket.Equals(lastZPack))
             {
                 sp.Write(zPacket);
-                yield return new WaitForSeconds(.1f);
+              //  yield return new WaitForSeconds(.5f);
                 lastZPack = zPacket;
             }
             if (!iPacket.Equals(lastIPack))
             {
                 sp.Write(iPacket);
-                yield return new WaitForSeconds(.1f);
+              //  yield return new WaitForSeconds(.5f);
                 lastIPack = iPacket;
             }
             if (!jPacket.Equals(lastJPack))
             {
                 sp.Write(jPacket);
-                yield return new WaitForSeconds(.1f);
+              //  yield return new WaitForSeconds(.5f);
                 lastJPack = jPacket;
             }
-            if (!aPacket.Equals(lastAPack))
+/*            if (!aPacket.Equals(lastAPack))
             {
                 sp.Write(aPacket);
                 yield return new WaitForSeconds(.1f);
                 lastAPack = aPacket;
-            }
-            //  sp.Close();
+            }*/
+              sp.Close();
 
         }
         sendingData = false;
@@ -319,12 +325,46 @@ public class MoveFocalPoint : MonoBehaviour
     //Made it so that the line animation starts on the far left of the board and moves all the way to the other side; the length of the distance traveled changes with the board size
     void LineAnimation()
     {
-        int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
+        /*int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
-        var length = col * 0.01f;
-        transform.localPosition = new Vector3(lineStart + (animFrameSlider.value * (2f / animFrameSlider.maxValue) * length - Mathf.Max(0, animFrameSlider.value - animFrameSlider.maxValue / 2f) * (2f / animFrameSlider.maxValue) * length), y_pos, z_pos);
+        Debug.Log("LineStart " + lineStart.ToString());
+        var length = col * 0.01f;*/
+        //transform.localPosition = new Vector3(lineStart + (animFrameSlider.value * (2f / animFrameSlider.maxValue) * length - Mathf.Max(0, animFrameSlider.value - animFrameSlider.maxValue / 2f) * (2f / animFrameSlider.maxValue) * length), y_pos, z_pos);
+        
+        int spatial_resolution = 20;
+        var a = (lineEndVal - lineStartVal) / spatial_resolution;
+        
+        if (transform.localPosition.x <= lineEndVal && transform.localPosition.x >= lineStartVal)
+        {
+            transform.localPosition = new Vector3(transform.localPosition.x + a*line_direction, transform.localPosition.z, transform.localPosition.y);
+            Debug.Log(line_direction);
+            x.text = transform.localPosition.x.ToString();
+            y.text = "0.35";
+            z.text = "0";
+        }
+        else if(transform.localPosition.x > lineEndVal)      
+        {
+            transform.localPosition = new Vector3(lineEndVal, transform.localPosition.z, transform.localPosition.y);
+            line_direction = -1;
+            x.text = transform.localPosition.x.ToString();
+            y.text = "0.35";
+            z.text = "0";
+
+        }
+       else if (transform.localPosition.x < lineStartVal)
+        {
+            transform.localPosition = new Vector3(lineStartVal, transform.localPosition.z, transform.localPosition.y);
+            line_direction = 1;
+            x.text = transform.localPosition.x.ToString();
+            y.text = "0.35";
+            z.text = "0";
+
+        }
+
     }
 
+    
+  
     void SquiggleAnimation(){
         int col = hapticboard.GetComponent<TransducerArrayManager>().getCol();
         float lineStart = (-1 * (col /2) * 0.01f);
@@ -337,7 +377,11 @@ public class MoveFocalPoint : MonoBehaviour
 
         
     }
-    
+    void AmptestAnimation()
+    {
+
+        intensitySlider.value=UnityEngine.Random.Range(0.1f, 1f);
+    }
     public void SpeedValueChanged()
     {
 
@@ -365,36 +409,40 @@ public class MoveFocalPoint : MonoBehaviour
         transform.localPosition = position;
     }
 
-    void Update()
+    void FixedUpdate()
     {
 
+
+
         updateTimer += Time.deltaTime;
-        if(updateTimer > updateRate)
+
+/*        if(updateTimer > updateRate)
         {
             updateTimer = 0f;
             sendData();
-        }
-        if (animPlaying)
-        {
-            /*
-            timeToNextFrame += Time.deltaTime * speedSlider.value;
-            if (timeToNextFrame > 1f / animFrameSlider.maxValue)
-            {
-                animFrameSlider.value = (animFrameSlider.value + 1) % animFrameSlider.maxValue;
-                timeToNextFrame -= 1f / animFrameSlider.maxValue;
-               
-            }
-            */
+        }*/
+        sendData();
+        /* if (animPlaying)
+         {
+             *//*
+             timeToNextFrame += Time.deltaTime * speedSlider.value;
+             if (timeToNextFrame > 1f / animFrameSlider.maxValue)
+             {
+                 animFrameSlider.value = (animFrameSlider.value + 1) % animFrameSlider.maxValue;
+                 timeToNextFrame -= 1f / animFrameSlider.maxValue;
 
-            timeToNextFrame += Time.deltaTime * frequency;
+             }
+             *//*
 
-            animFrameSlider.value = (int) ((timeToNextFrame % 1f) * (animFrameSlider.maxValue));
-            timeToNextFrame %= 1f;
-        } else
-        {
-            timeToNextFrame = animFrameSlider.value / animFrameSlider.maxValue;
-        }
-       
+             timeToNextFrame += Time.deltaTime * frequency;
+
+             animFrameSlider.value = (int) ((timeToNextFrame % 1f) * (animFrameSlider.maxValue));
+             timeToNextFrame %= 1f;
+         } else
+         {
+             timeToNextFrame = animFrameSlider.value / animFrameSlider.maxValue;
+         }*/
+
 
         speedSlider.minValue= 0f;
         if (!animationOn & !randomAnim.isOn)
@@ -434,6 +482,10 @@ public class MoveFocalPoint : MonoBehaviour
         if (randomAnim.isOn)
         {
             RandomAnimation();
+        }
+        if (ampltestAnim.isOn)
+        {
+            AmptestAnimation();
         }
     }
 }
