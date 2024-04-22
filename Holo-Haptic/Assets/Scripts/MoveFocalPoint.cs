@@ -69,6 +69,8 @@ public class MoveFocalPoint : MonoBehaviour
     string lastJPack = "";
     string lastAPack = "";
 
+    public HandTrackingScript handTrackingScript;
+
     void Start()
     {
         //Debug.Log(transform.position.x.ToString());
@@ -212,16 +214,24 @@ public class MoveFocalPoint : MonoBehaviour
     {
         if (!sendingData)
         {
-           StartCoroutine(asyncSendData());
+            
+            StartCoroutine(asyncSendData());
         }
     }
 
     public IEnumerator asyncSendData()
     {
         sendingData = true;
-        string xPacket = "#x" + ((long)(float.Parse(x.text) * 1000 * 2048 / 8.5f)).ToString("X5") + "$";  //34 before
-        string yPacket = "#y" + ((long)(float.Parse(z.text) * 1000 * 2048 / 8.5f)).ToString("X5") + "$";
-        string zPacket = "#z" + ((long)(float.Parse(y.text) * 1000 * 2048 / 8.5f)).ToString("X5") + "$";
+/*        x.text = handTrackingScript.hand_x.text;
+        y.text = handTrackingScript.hand_y.text;
+        z.text = handTrackingScript.hand_z.text;*/
+        Debug.Log("handx: " + handTrackingScript.hand_x.text + "handy: " + handTrackingScript.hand_y.text + "handz: " + handTrackingScript.hand_z.text);
+        Debug.Log("focalx: " + x.text + "focaly: " + y.text + "focalz: " + z.text);
+       
+        string xPacket = "#x" + ((long)(float.Parse(handTrackingScript.hand_x.text) * 1000 * 2048 / 8.5f)).ToString("X5") + "$";  //34 before   x.text
+ //       string xPacket = "#x" + ((long)(float.Parse(x.text) * 1000 * 2048 / 8.5f)).ToString("X5") + "$";  //34 before   x.text
+        string yPacket = "#y" + ((long)(0.2 * 1000 * 2048 / 8.5f)).ToString("X5") + "$";   //z.text
+        string zPacket = "#z" + ((long)(float.Parse(handTrackingScript.hand_y.text) * 1000 * 2048 / 8.5f)).ToString("X5") + "$";
         string iPacket = "#i" + ((long)0).ToString("X5") + "$";
         string jPacket = "#j" + ((long)0).ToString("X5") + "$";
         string aPacket = "#a" + ((long)(meshRend.enabled ? System.Math.Round(intensitySlider.value, 2) * 1023 : 0)).ToString("X5") + "$";
@@ -296,11 +306,13 @@ public class MoveFocalPoint : MonoBehaviour
     {
         Debug.Log("started");
 
+
         bool xParse = float.TryParse(x.text, out x_pos);
         bool yParse = float.TryParse(y.text, out y_pos);
         bool zParse = float.TryParse(z.text, out z_pos);
 
         Debug.Log("x: " + x_pos + ",y: " + y_pos + ",z: " + z_pos);
+       
 
     }
 
@@ -416,11 +428,14 @@ public class MoveFocalPoint : MonoBehaviour
 
         updateTimer += Time.deltaTime;
 
-/*        if(updateTimer > updateRate)
-        {
-            updateTimer = 0f;
-            sendData();
-        }*/
+        /*        if(updateTimer > updateRate)
+                {
+                    updateTimer = 0f;
+                    sendData();
+                }*/
+
+
+        
         sendData();
         /* if (animPlaying)
          {
