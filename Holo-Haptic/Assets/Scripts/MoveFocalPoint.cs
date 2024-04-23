@@ -226,11 +226,11 @@ public class MoveFocalPoint : MonoBehaviour
         y.text = handTrackingScript.hand_y.text;
         z.text = handTrackingScript.hand_z.text;*/
         Debug.Log("handx: " + handTrackingScript.hand_x.text + "handy: " + handTrackingScript.hand_y.text + "handz: " + handTrackingScript.hand_z.text);
-        Debug.Log("focalx: " + x.text + "focaly: " + y.text + "focalz: " + z.text);
+        //Debug.Log("focalx: " + x.text + "focaly: " + y.text + "focalz: " + z.text);
        
         string xPacket = "#x" + ((long)(float.Parse(handTrackingScript.hand_x.text) * 1000 * 2048 / 8.5f)).ToString("X5") + "$";  //34 before   x.text
  //       string xPacket = "#x" + ((long)(float.Parse(x.text) * 1000 * 2048 / 8.5f)).ToString("X5") + "$";  //34 before   x.text
-        string yPacket = "#y" + ((long)(0.2 * 1000 * 2048 / 8.5f)).ToString("X5") + "$";   //z.text
+        string yPacket = "#y" + ((long)(float.Parse(handTrackingScript.hand_z.text) * 1000 * 2048 / 8.5f)).ToString("X5") + "$";   //z.text
         string zPacket = "#z" + ((long)(float.Parse(handTrackingScript.hand_y.text) * 1000 * 2048 / 8.5f)).ToString("X5") + "$";
         string iPacket = "#i" + ((long)0).ToString("X5") + "$";
         string jPacket = "#j" + ((long)0).ToString("X5") + "$";

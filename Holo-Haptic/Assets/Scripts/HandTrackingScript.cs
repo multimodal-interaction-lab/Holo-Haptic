@@ -14,8 +14,8 @@ public class HandTrackingScript : MonoBehaviour
 
     private GameObject sphereInstance; // Reference to the instantiated sphere
 
-    public float y_delta = 0.04f;
-    public float z_delta = -0.04f;
+    public float y_delta = 0.00f;
+    public float z_delta = -0.00f;
     void FixedUpdate()
     {
         if (hand.IsTracked)
@@ -30,14 +30,14 @@ public class HandTrackingScript : MonoBehaviour
             
 
             // Extract x, y, z components from palmPosition
-            float palmPosX = Mathf.Abs(Mathf.Round(palmPosition.x*1000f)/10000f);
-            float palmPosY = Mathf.Abs(Mathf.Round(palmPosition.y * 1000f) / 5000f);
-            float palmPosZ = Mathf.Abs(Mathf.Round(palmPosition.z * 1000f) / 1000f);
+            float palmPosX = Mathf.Round(palmPosition.x * 1000f) / 1000f;
+            float palmPosY = Mathf.Round(palmPosition.y * 1000f) / 1000f;
+            float palmPosZ = Mathf.Round(palmPosition.z * 1000f) / 1000f;
             //Debug.Log(palmPosition);
             hand_x.text = palmPosX.ToString();
             hand_y.text = palmPosY.ToString();
             hand_z.text = palmPosZ.ToString();
-
+           
             // Instantiate sphere below palm if not already instantiated
             if (sphereInstance == null)
             {
